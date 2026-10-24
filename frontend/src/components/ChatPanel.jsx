@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useChatContext } from '../context/ChatContext'
-import EmptyState from './EmptyState'
+import FindContactsContainer from './FindContactsContainer'
 import MessageBubble from './MessageBubble'
 import MessageInput from './MessageInput'
 import Avatar from './Avatar'
@@ -9,6 +9,7 @@ const ChatPanel = () => {
   const {
     selectedUser,
     selectUser,
+    isFindingContacts,
     messages,
     loadingMessages,
     hasMoreMessages,
@@ -46,10 +47,10 @@ const ChatPanel = () => {
     lastMessageIdRef.current = lastMessageId
   }, [messages])
 
-  if (!selectedUser) {
+  if (!selectedUser || isFindingContacts) {
     return (
       <main className="chat-panel chat-panel--empty">
-        <EmptyState />
+        <FindContactsContainer />
       </main>
     )
   }

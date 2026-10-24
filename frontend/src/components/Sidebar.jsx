@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import ContactItem from './ContactItem'
 import Avatar from './Avatar'
-import AddFriendModal from './AddFriendModal'
 
 const Sidebar = ({ onProfileClick }) => {
   const {
@@ -13,12 +12,12 @@ const Sidebar = ({ onProfileClick }) => {
     pendingRequests,
     selectedUser,
     selectUser,
+    setIsFindingContacts,
     onlineUserIds,
   } = useChatContext()
   const { authUser, logout } = useAuth()
   const { addToast } = useToast()
   const [search, setSearch] = useState('')
-  const [showAddModal, setShowAddModal] = useState(false)
 
   const filtered = users.filter(u =>
     u.fullname.toLowerCase().includes(search.toLowerCase()) ||
@@ -48,9 +47,12 @@ const Sidebar = ({ onProfileClick }) => {
         <div className="sidebar__header-actions">
           <button
             className="sidebar__add-btn"
-            onClick={() => setShowAddModal(true)}
-            title="Add contact / View requests"
-            aria-label="Add contact"
+            onClick={() => {
+              selectUser(null)
+              setIsFindingContacts(true)
+            }}
+            title="Find Contacts / Friend Requests"
+            aria-label="Find contacts"
           >
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -113,9 +115,12 @@ const Sidebar = ({ onProfileClick }) => {
             {!search && (
               <button
                 className="btn-primary sidebar__empty-add"
-                onClick={() => setShowAddModal(true)}
+                onClick={() => {
+                  selectUser(null)
+                  setIsFindingContacts(true)
+                }}
               >
-                + Add Contacts
+                + Find Contacts
               </button>
             )}
           </div>
@@ -131,10 +136,6 @@ const Sidebar = ({ onProfileClick }) => {
           ))
         )}
       </div>
-
-      {showAddModal && (
-        <AddFriendModal onClose={() => setShowAddModal(false)} />
-      )}
 
       <style>{`
         .sidebar {

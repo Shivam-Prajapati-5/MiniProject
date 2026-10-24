@@ -20,6 +20,7 @@ export const ChatProvider = ({ children }) => {
   const [users, setUsers] = useState([])
   const [loadingUsers, setLoadingUsers] = useState(false)
   const [pendingRequests, setPendingRequests] = useState([])
+  const [isFindingContacts, setIsFindingContacts] = useState(false)
 
   const [selectedUser, setSelectedUser] = useState(null)
   const [activeConversationId, setActiveConversationId] = useState(null)
@@ -182,8 +183,16 @@ export const ChatProvider = ({ children }) => {
 
   /* ── Select a contact ── */
   const selectUser = useCallback((user) => {
-    if (!user) return
+    if (!user) {
+      selectedUserRef.current = null
+      selectedConversationRef.current = null
+      setSelectedUser(null)
+      setActiveConversationId(null)
+      setMessages([])
+      return
+    }
 
+    setIsFindingContacts(false)
     const userId = String(user._id)
     const conversationId = convMapRef.current[userId] ?? null
 
@@ -482,6 +491,8 @@ export const ChatProvider = ({ children }) => {
       declineFriendRequest,
       selectedUser,
       selectUser,
+      isFindingContacts,
+      setIsFindingContacts,
       activeConversationId,
       messages,
       loadingMessages,

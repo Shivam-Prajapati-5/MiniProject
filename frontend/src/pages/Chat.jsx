@@ -6,10 +6,12 @@ import ProfilePanel from '../components/ProfilePanel';
 
 const ChatLayout = () => {
   const [showProfile, setShowProfile] = useState(false);
-  const { selectedUser } = useChatContext();
+  const { selectedUser, isFindingContacts } = useChatContext();
+
+  const showMainPanel = Boolean(selectedUser || isFindingContacts);
 
   return (
-    <div className={`chat-layout ${selectedUser ? 'has-active-chat' : 'no-active-chat'}`}>
+    <div className={`chat-layout ${showMainPanel ? 'has-active-chat' : 'no-active-chat'}`}>
       {/* Ambient Dynamic Background Lighting */}
       <div className="ambient-glow-layer" aria-hidden="true">
         <div className="ambient-orb ambient-orb--maroon" />
