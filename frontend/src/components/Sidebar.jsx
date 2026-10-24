@@ -3,11 +3,14 @@ import { useChatContext } from '../context/ChatContext'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import ContactItem from './ContactItem'
+import Avatar from './Avatar'
+import AddFriendModal from './AddFriendModal'
 
 const Sidebar = ({ onProfileClick }) => {
   const {
     users,
     loadingUsers,
+    pendingRequests,
     selectedUser,
     selectUser,
     onlineUserIds,
@@ -15,6 +18,7 @@ const Sidebar = ({ onProfileClick }) => {
   const { authUser, logout } = useAuth()
   const { addToast } = useToast()
   const [search, setSearch] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
 
   const filtered = users.filter(u =>
     u.fullname.toLowerCase().includes(search.toLowerCase()) ||
@@ -34,25 +38,39 @@ const Sidebar = ({ onProfileClick }) => {
       {/* ── Current user header ── */}
       <div className="sidebar__header">
         <button className="sidebar__me" onClick={onProfileClick} title="View profile">
-          <div className="sidebar__me-avatar">
-            {authUser?.profilepicture
-              ? <img src={authUser.profilepicture} alt={authUser.fullname} />
-              : <span>{authUser?.fullname?.[0]?.toUpperCase()}</span>
-            }
-          </div>
+          <Avatar user={authUser} size={36} />
           <div className="sidebar__me-info">
             <span className="sidebar__me-name">{authUser?.fullname}</span>
             <span className="sidebar__me-tag">@{authUser?.username}</span>
           </div>
         </button>
 
-        <button className="sidebar__logout" onClick={handleLogout} title="Sign out" aria-label="Sign out">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-        </button>
+        <div className="sidebar__header-actions">
+          <button
+            className="sidebar__add-btn"
+            onClick={() => setShowAddModal(true)}
+            title="Add contact / View requests"
+            aria-label="Add contact"
+          >
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="8.5" cy="7" r="4" />
+              <line x1="20" y1="8" x2="20" y2="14" />
+              <line x1="23" y1="11" x2="17" y2="11" />
+            </svg>
+            {pendingRequests && pendingRequests.length > 0 && (
+              <span className="sidebar__add-badge">{pendingRequests.length}</span>
+            )}
+          </button>
+
+          <button className="sidebar__logout" onClick={handleLogout} title="Sign out" aria-label="Sign out">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* ── Section title ── */}
@@ -88,9 +106,19 @@ const Sidebar = ({ onProfileClick }) => {
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <p className="sidebar__empty">
-            {search ? 'No contacts found' : 'No other users yet'}
-          </p>
+          <div className="sidebar__empty-wrap">
+            <p className="sidebar__empty">
+              {search ? 'No contacts found' : 'No contacts yet'}
+            </p>
+            {!search && (
+              <button
+                className="btn-primary sidebar__empty-add"
+                onClick={() => setShowAddModal(true)}
+              >
+                + Add Contacts
+              </button>
+            )}
+          </div>
         ) : (
           filtered.map(user => (
             <ContactItem
@@ -104,28 +132,108 @@ const Sidebar = ({ onProfileClick }) => {
         )}
       </div>
 
+      {showAddModal && (
+        <AddFriendModal onClose={() => setShowAddModal(false)} />
+      )}
+
       <style>{`
         .sidebar {
-          width: 25%;
-          min-width: 220px;
-          max-width: 300px;
+          width: 280px;
+          min-width: 250px;
+          max-width: 320px;
           display: flex;
           flex-direction: column;
-          background: var(--bg-sidebar);
-          border-right: 1px solid var(--border-mist);
+          background: #100F12;
+          border-right: 1px solid rgba(198, 161, 91, 0.20);
           overflow: hidden;
           animation: slideInLeft 300ms var(--ease);
+          flex-shrink: 0;
         }
 
         /* Header */
         .sidebar__header {
           display: flex;
           align-items: center;
-          padding: 16px 14px 14px;
+          padding: 14px 12px;
           gap: 8px;
-          border-bottom: 1px solid var(--border-mist);
+          border-bottom: 1px solid rgba(198, 161, 91, 0.18);
+          background: #141315;
           flex-shrink: 0;
         }
+
+        .sidebar__header-actions {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .sidebar__add-btn {
+          position: relative;
+          background: rgba(74, 21, 37, 0.45);
+          border: 1px solid rgba(198, 161, 91, 0.35);
+          color: #E0C58A;
+          width: 32px;
+          height: 32px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.18s;
+        }
+
+        .sidebar__add-btn:hover {
+          background: #4A1525;
+          border-color: #E0C58A;
+          color: #FFFFFF;
+        }
+
+        .sidebar__add-badge {
+          position: absolute;
+          top: -4px;
+          right: -4px;
+          background: #C6A15B;
+          color: #141315;
+          font-size: 0.65rem;
+          font-weight: 800;
+          min-width: 15px;
+          height: 15px;
+          padding: 0 3px;
+          border-radius: 999px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1.5px solid #141315;
+        }
+
+        .sidebar__empty-wrap {
+          padding: 40px 16px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .sidebar__empty-add {
+          padding: 8px 16px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          border-radius: 4px;
+          background: #4A1525;
+          color: #F5F2ED;
+          border: 1px solid rgba(198, 161, 91, 0.4);
+          cursor: pointer;
+          transition: all 0.18s;
+        }
+
+        .sidebar__empty-add:hover {
+          background: #702A3C;
+          border-color: #E0C58A;
+        }
+
         .sidebar__me {
           flex: 1;
           display: flex;
@@ -135,34 +243,15 @@ const Sidebar = ({ onProfileClick }) => {
           border: none;
           cursor: pointer;
           padding: 4px;
-          border-radius: var(--r-sm);
+          border-radius: 4px;
           text-align: left;
           transition: background var(--t-fast);
           min-width: 0;
         }
-        .sidebar__me:hover { background: var(--bg-hover); }
-        .sidebar__me-avatar {
-          width: 36px;
-          height: 36px;
-          border-radius: var(--r-avatar);
-          overflow: hidden;
-          flex-shrink: 0;
-          background: var(--teal-dark);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid var(--border-mist);
+        .sidebar__me:hover {
+          background: rgba(198, 161, 91, 0.08);
         }
-        .sidebar__me-avatar img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .sidebar__me-avatar span {
-          font-size: 14px;
-          font-weight: 600;
-          color: var(--teal-bright);
-        }
+
         .sidebar__me-info {
           display: flex;
           flex-direction: column;
@@ -178,36 +267,42 @@ const Sidebar = ({ onProfileClick }) => {
           text-overflow: ellipsis;
         }
         .sidebar__me-tag {
+          font-family: var(--font-mono);
           font-size: 11px;
-          font-weight: 300;
-          color: var(--text-muted);
-          letter-spacing: 0.03em;
+          color: #C6A15B;
+          letter-spacing: 0.02em;
         }
+
         .sidebar__logout {
           width: 32px;
           height: 32px;
-          border-radius: var(--r-sm);
-          border: none;
-          background: none;
+          border-radius: 4px;
+          border: 1px solid rgba(198, 161, 91, 0.18);
+          background: transparent;
           color: var(--text-muted);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           flex-shrink: 0;
-          transition: color var(--t-fast), background var(--t-fast);
+          transition: all 0.18s;
         }
-        .sidebar__logout:hover { color: var(--amber); background: var(--amber-glow); }
-        .sidebar__logout svg { width: 16px; height: 16px; }
+        .sidebar__logout:hover {
+          color: #FFB4AB;
+          border-color: rgba(255, 180, 171, 0.4);
+          background: rgba(147, 0, 10, 0.2);
+        }
+        .sidebar__logout svg { width: 15px; height: 15px; }
 
         /* Section label */
         .sidebar__section-label {
-          padding: 14px 18px 6px;
-          font-size: 10px;
-          font-weight: 700;
+          padding: 12px 14px 6px;
+          font-family: var(--font-cinzel);
+          font-size: 9.5px;
+          font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--text-muted);
+          letter-spacing: 0.18em;
+          color: #C6A15B;
           flex-shrink: 0;
         }
 
@@ -221,30 +316,29 @@ const Sidebar = ({ onProfileClick }) => {
         }
         .sidebar__search-icon {
           position: absolute;
-          left: 11px;
+          left: 10px;
           width: 14px;
           height: 14px;
-          color: var(--text-muted);
+          color: #C6A15B;
           pointer-events: none;
         }
         .sidebar__search-input {
           width: 100%;
-          padding: 9px 32px 9px 34px;
-          background: var(--bg-input);
-          border: 1px solid var(--border-mist);
-          border-radius: var(--r-full);
+          padding: 8px 30px 8px 32px;
+          background: #18171A;
+          border: 1px solid rgba(198, 161, 91, 0.20);
+          border-radius: 4px;
           color: var(--text-primary);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 13px;
+          font-family: var(--font-sans);
+          font-size: 12px;
           outline: none;
           transition: border-color var(--t-fast);
-          caret-color: var(--teal-bright);
         }
         .sidebar__search-input::placeholder { color: var(--text-muted); }
-        .sidebar__search-input:focus { border-color: var(--teal-mid); }
+        .sidebar__search-input:focus { border-color: #E0C58A; }
         .sidebar__search-clear {
           position: absolute;
-          right: 10px;
+          right: 8px;
           background: none;
           border: none;
           cursor: pointer;
@@ -252,30 +346,28 @@ const Sidebar = ({ onProfileClick }) => {
           display: flex;
           align-items: center;
           padding: 2px;
-          transition: color var(--t-fast);
         }
-        .sidebar__search-clear:hover { color: var(--text-secondary); }
+        .sidebar__search-clear:hover { color: var(--text-primary); }
         .sidebar__search-clear svg { width: 12px; height: 12px; }
 
         /* List */
         .sidebar__list {
           flex: 1;
           overflow-y: auto;
-          padding-bottom: 8px;
+          padding: 4px 8px 8px;
         }
         .sidebar__empty {
-          font-size: 13px;
+          font-size: 12px;
           color: var(--text-muted);
           text-align: center;
-          padding: 30px 16px;
         }
 
         /* Skeleton loaders */
-        .sidebar__loading { padding: 8px 12px; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar__loading { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
         .sidebar__skeleton {
-          height: 52px;
-          border-radius: var(--r-md);
-          background: linear-gradient(90deg, var(--bg-hover) 25%, rgba(30,60,80,0.35) 50%, var(--bg-hover) 75%);
+          height: 48px;
+          border-radius: 4px;
+          background: linear-gradient(90deg, #18171A 25%, #232126 50%, #18171A 75%);
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
         }

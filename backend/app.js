@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { env } from "./config/env.js";
 import authRouter from "./rout/authuser.js";
 import messageRouter from "./rout/messageRout.js";
+import friendRouter from "./rout/friendRoute.js";
 import {
     errorHandler,
     notFoundHandler
@@ -57,6 +58,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/friends", friendRouter);
 
 app.get("/", (req, res) => {
     if (hasFrontendBuild) {

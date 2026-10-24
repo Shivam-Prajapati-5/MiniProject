@@ -2,23 +2,15 @@
 const EmptyState = () => (
   <div className="empty-state">
     <div className="empty-state__icon">
-      <svg viewBox="0 0 80 80" fill="none">
-        {/* outer bubble */}
-        <rect x="6" y="10" width="52" height="38" rx="10" stroke="var(--teal-mid)" strokeWidth="2.5" />
-        {/* tail */}
-        <path d="M18 48 L12 58 L30 50" stroke="var(--teal-mid)" strokeWidth="2.5" strokeLinejoin="round" />
-        {/* inner bubble (receiver) */}
-        <rect x="26" y="32" width="46" height="30" rx="9" stroke="var(--teal-bright)" strokeWidth="2" strokeDasharray="4 3" />
-        {/* dots inside first bubble */}
-        <circle cx="20" cy="29" r="3" fill="var(--teal-mid)" />
-        <circle cx="30" cy="29" r="3" fill="var(--teal-mid)" />
-        <circle cx="40" cy="29" r="3" fill="var(--teal-mid)" />
-        {/* mint accent dot */}
-        <circle cx="64" cy="22" r="5" fill="var(--mint-sender)" opacity="0.7" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M12 2L2 9l10 7 10-7-10-7z" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 15l10 7 10-7" strokeLinecap="round" strokeLinejoin="round" opacity="0.8" />
+        <path d="M2 11l10 7 10-7" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
       </svg>
     </div>
-    <h2 className="empty-state__title">Pick a conversation</h2>
-    <p className="empty-state__sub">Select a contact from the sidebar to start chatting</p>
+    <span className="empty-state__tag">NEXCHAT // SECURE TERMINAL</span>
+    <h2 className="empty-state__title">Select a Conversation</h2>
+    <p className="empty-state__sub">Choose an active peer from the sidebar or click + to search verified handles</p>
 
     <style>{`
       .empty-state {
@@ -27,36 +19,49 @@ const EmptyState = () => (
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 14px;
+        gap: 10px;
         padding: 40px;
         animation: fadeIn 300ms var(--ease);
+        background: #141315;
+        background-image: radial-gradient(rgba(198, 161, 91, 0.03) 1px, transparent 0);
+        background-size: 28px 28px;
       }
       .empty-state__icon {
-        width: 100px;
-        height: 100px;
+        width: 64px;
+        height: 64px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(13, 92, 110, 0.12);
-        border-radius: 50%;
+        background: #38101C;
+        border: 1px solid rgba(198, 161, 91, 0.4);
+        border-radius: 8px;
+        color: #E0C58A;
         margin-bottom: 8px;
+        box-shadow: 0 4px 18px rgba(74, 21, 37, 0.45);
       }
       .empty-state__icon svg {
-        width: 60px;
-        height: 60px;
+        width: 32px;
+        height: 32px;
+      }
+      .empty-state__tag {
+        font-family: var(--font-cinzel);
+        font-size: 9px;
+        letter-spacing: 0.22em;
+        color: #C6A15B;
       }
       .empty-state__title {
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--text-primary);
-        letter-spacing: -0.3px;
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: #F5F2ED;
+        letter-spacing: -0.01em;
       }
       .empty-state__sub {
-        font-size: 14px;
-        color: var(--text-muted);
+        font-size: 12.5px;
+        color: #77777D;
         text-align: center;
-        max-width: 260px;
-        line-height: 1.55;
+        max-width: 320px;
+        line-height: 1.5;
       }
     `}</style>
   </div>

@@ -33,3 +33,6 @@ Thumbs.db
 # Testing & Coverage
 coverage/
 .nyc_output/
+
+# Design Reference Assets
+stitch_nexchat_realtime_messaging_platform/

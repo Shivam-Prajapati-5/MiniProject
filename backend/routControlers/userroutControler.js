@@ -104,9 +104,8 @@ export const userRegister = async (req, res, next) => {
             )
         ]);
 
-        const avatarType = gender === "male" ? "boy" : "girl";
-        const generatedPicture =
-            `https://avatar.iran.liara.run/public/${avatarType}?username=${encodeURIComponent(username)}`;
+        const DEFAULT_EMOJIS = ["🦊", "⚡", "🚀", "🐱", "👾", "🎨", "🐼", "🦁", "🔮", "🪐", "🎯", "💎"];
+        const randomEmoji = DEFAULT_EMOJIS[Math.floor(Math.random() * DEFAULT_EMOJIS.length)];
 
         const newUser = await User.create({
             fullname,
@@ -114,7 +113,7 @@ export const userRegister = async (req, res, next) => {
             email,
             gender,
             password: hashPassword,
-            profilepicture: profilepicture || generatedPicture,
+            profilepicture: profilepicture || randomEmoji,
             securityAnswers: hashedAnswers
         });
 
@@ -218,6 +217,32 @@ export const getCurrentUser = async (req, res) => {
             updatedAt: user.updatedAt
         }
     });
+};
+
+
+// ================= UPDATE AVATAR =================
+export const updateAvatar = async (req, res, next) => {
+    try {
+        const avatar = asTrimmedString(req.body.avatar || req.body.profilepicture);
+
+        if (!avatar) {
+            return res.status(400).json({ success: false, message: "Avatar is required" });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            { $set: { profilepicture: avatar } },
+            { new: true }
+        ).select("fullname username profilepicture email gender createdAt");
+
+        return res.status(200).json({
+            success: true,
+            message: "Avatar updated successfully",
+            user
+        });
+    } catch (error) {
+        return next(error);
+    }
 };
 
 

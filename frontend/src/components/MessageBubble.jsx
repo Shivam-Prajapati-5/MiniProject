@@ -40,35 +40,40 @@ const MessageBubble = ({ msg }) => {
           line-height: 1.5;
         }
 
-        /* Sender — sea glass mint */
+        /* Sender — Deep Maroon */
         .bubble--mine {
-          background: var(--mint-sender);
-          color: var(--mint-text);
-          border-radius: 16px 16px 4px 16px;
+          background: #4A1525;
+          color: #F5F2ED;
+          border: 1px solid rgba(198, 161, 91, 0.4);
+          border-radius: 8px 8px 2px 8px;
+          box-shadow: 0 4px 14px rgba(74, 21, 37, 0.4);
         }
-        /* Receiver — deep blue charcoal glass */
+        /* Receiver — Charcoal Glass */
         .bubble--theirs {
-          background: var(--glass-recv);
+          background: #1E1D20;
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
-          border: 1px solid var(--border-mist);
-          color: var(--text-primary);
-          border-radius: 16px 16px 16px 4px;
+          border: 1px solid rgba(198, 161, 91, 0.18);
+          color: #F5F2ED;
+          border-radius: 8px 8px 8px 2px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
 
         .bubble__text {
-          font-size: 14px;
+          font-size: 13.5px;
           font-weight: 400;
+          line-height: 1.5;
         }
         .bubble__time {
-          font-size: 10px;
-          font-weight: 300;
+          font-family: var(--font-mono);
+          font-size: 9.5px;
+          font-weight: 400;
           letter-spacing: 0.04em;
-          opacity: 0.65;
           align-self: flex-end;
+          margin-top: 2px;
         }
-        .bubble--mine   .bubble__time { color: var(--mint-text); }
-        .bubble--theirs .bubble__time { color: var(--text-secondary); }
+        .bubble--mine   .bubble__time { color: #E0C58A; opacity: 0.85; }
+        .bubble--theirs .bubble__time { color: #77777D; opacity: 0.85; }
       `}</style>
     </div>
   )

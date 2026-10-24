@@ -3,6 +3,7 @@ import { useChatContext } from '../context/ChatContext'
 import EmptyState from './EmptyState'
 import MessageBubble from './MessageBubble'
 import MessageInput from './MessageInput'
+import Avatar from './Avatar'
 
 const ChatPanel = () => {
   const {
@@ -56,12 +57,7 @@ const ChatPanel = () => {
     <main className="chat-panel">
       {/* ── Header ── */}
       <div className="chat-panel__header">
-        <div className="chat-panel__header-avatar">
-          {selectedUser.profilepicture
-            ? <img src={selectedUser.profilepicture} alt={selectedUser.fullname} />
-            : <span>{selectedUser.fullname?.[0]?.toUpperCase()}</span>
-          }
-        </div>
+        <Avatar user={selectedUser} size={40} showOnline={true} isOnline={isOnline} />
         <div className="chat-panel__header-info">
           <span className="chat-panel__header-name">{selectedUser.fullname}</span>
           <span className={`chat-panel__header-sub ${isOnline ? 'chat-panel__header-sub--online' : ''}`}>
@@ -123,7 +119,7 @@ const ChatPanel = () => {
           flex: 1;
           display: flex;
           flex-direction: column;
-          background: var(--bg-chat);
+          background: #141315;
           overflow: hidden;
           animation: fadeIn 300ms var(--ease);
         }
@@ -137,66 +133,41 @@ const ChatPanel = () => {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 14px 22px;
-          border-bottom: 1px solid var(--border-mist);
-          background: rgba(13, 26, 34, 0.8);
-          backdrop-filter: blur(8px);
+          padding: 12px 20px;
+          border-bottom: 1px solid rgba(198, 161, 91, 0.18);
+          background: #18171A;
           flex-shrink: 0;
           position: relative;
-        }
-        .chat-panel__header-avatar {
-          width: 38px;
-          height: 38px;
-          border-radius: var(--r-avatar);
-          overflow: hidden;
-          flex-shrink: 0;
-          background: var(--teal-dark);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid var(--border-mist);
-        }
-        .chat-panel__header-avatar img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .chat-panel__header-avatar span {
-          font-size: 14px;
-          font-weight: 600;
-          color: var(--teal-bright);
         }
         .chat-panel__header-info {
           flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 1px;
           min-width: 0;
         }
         .chat-panel__header-name {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 600;
           color: var(--text-primary);
-          letter-spacing: -0.2px;
         }
         .chat-panel__header-sub {
-          font-size: 12px;
-          font-weight: 300;
+          font-family: var(--font-mono);
+          font-size: 11px;
           color: var(--text-muted);
-          letter-spacing: 0.03em;
         }
         .chat-panel__header-sub--online {
-          color: var(--teal-bright);
+          color: #10B981;
         }
-        /* Subtle teal accent strip at bottom of header */
+        /* Subtle gold accent strip at bottom of header */
         .chat-panel__header-accent {
           position: absolute;
           bottom: 0;
-          left: 22px;
-          right: 22px;
+          left: 20px;
+          right: 20px;
           height: 1px;
-          background: linear-gradient(90deg, var(--teal-bright), transparent);
-          opacity: 0.25;
+          background: linear-gradient(90deg, #C6A15B, transparent);
+          opacity: 0.35;
         }
 
         /* Messages scrollable area */
@@ -206,7 +177,10 @@ const ChatPanel = () => {
           padding: 20px 24px;
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
+          background: #141315;
+          background-image: radial-gradient(rgba(198, 161, 91, 0.03) 1px, transparent 0);
+          background-size: 24px 24px;
         }
 
         /* Older-message pagination */
@@ -215,22 +189,33 @@ const ChatPanel = () => {
           flex-shrink: 0;
           margin-bottom: 10px;
           padding: 6px 14px;
-          background: var(--bg-input);
-          border: 1px solid var(--border-mist);
-          border-radius: var(--r-full);
-          color: var(--text-secondary);
-          font-family: inherit;
-          font-size: 11.5px;
+          background: #18171A;
+          border: 1px solid rgba(198, 161, 91, 0.20);
+          border-radius: 4px;
+          color: #E0C58A;
+          font-family: var(--font-mono);
+          font-size: 11px;
           cursor: pointer;
-          transition: border-color var(--t-fast), color var(--t-fast);
+          transition: all var(--t-fast);
         }
         .chat-panel__load-older:hover:not(:disabled) {
-          border-color: var(--teal-mid);
-          color: var(--teal-bright);
+          border-color: #E0C58A;
+          background: rgba(74, 21, 37, 0.4);
         }
         .chat-panel__load-older:disabled {
           opacity: 0.6;
           cursor: wait;
+        }
+
+        .chat-panel__no-msgs {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          height: 100%;
+          color: var(--text-muted);
+          font-size: 13px;
         }
 
         /* Typing indicator */
@@ -239,9 +224,9 @@ const ChatPanel = () => {
           align-items: center;
           gap: 8px;
           padding: 4px 2px 0;
-          color: var(--text-muted);
-          font-size: 11.5px;
-          font-style: italic;
+          color: #E0C58A;
+          font-family: var(--font-mono);
+          font-size: 11px;
           animation: fadeIn 180ms var(--ease);
         }
         .chat-panel__typing-dots {
@@ -253,7 +238,7 @@ const ChatPanel = () => {
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: var(--teal-bright);
+          background: #E0C58A;
           animation: typingBounce 1.1s infinite ease-in-out;
         }
         .chat-panel__typing-dots i:nth-child(2) { animation-delay: 0.15s; }

@@ -5,6 +5,7 @@ import {
     userLogout,
     getUsers,
     getCurrentUser,
+    updateAvatar,
     getSocketToken,
     getRecoveryQuestionCatalog,
     getRecoveryQuestions,
@@ -31,6 +32,7 @@ router.post("/recovery/questions", recoveryLimiter, getRecoveryQuestions);
 router.post("/recovery/reset", recoveryLimiter, resetPasswordWithSecurityAnswers);
 
 router.get("/me", isLogin, getCurrentUser);
+router.put("/avatar", isLogin, updateAvatar);
 
 router.get("/socket-token", isLogin, getSocketToken);
 

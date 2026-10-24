@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
+import EmojiAvatarPicker from '../components/EmojiAvatarPicker';
 import './Auth.css';
 
 const FALLBACK_QUESTIONS = [
@@ -25,8 +26,14 @@ const emptyForm = () => ({
   email: '',
   password: '',
   gender: 'male',
+  profilepicture: '🦊',
   securityAnswers: DEFAULT_ANSWERS(),
 });
+
+const DEMO_FILLS = [
+  { label: 'Alex Rivera (Architect)', email: 'alex@example.com' },
+  { label: 'Sarah Chen (Lead Infra)', email: 'sarah@example.com' },
+];
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -36,6 +43,7 @@ const Auth = () => {
   const { login, register, resetPassword, loading } = useAuth();
   const [mode, setMode] = useState(initialMode); // login | register | recovery
   const [recoveryStep, setRecoveryStep] = useState('email'); // email | questions
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const m = searchParams.get('mode');
@@ -43,6 +51,7 @@ const Auth = () => {
       setMode(m);
     }
   }, [searchParams]);
+
   const [catalog, setCatalog] = useState(FALLBACK_QUESTIONS);
   const [recoveryQuestions, setRecoveryQuestions] = useState([]);
   const [recoveryAnswers, setRecoveryAnswers] = useState([]);
@@ -56,9 +65,7 @@ const Auth = () => {
           setCatalog(data.questions);
         }
       })
-      .catch(() => {
-        // The built-in copy of the catalog keeps signup usable offline.
-      });
+      .catch(() => {});
   }, []);
 
   const handleChange = (event) => {
@@ -100,6 +107,11 @@ const Auth = () => {
     setRecoveryAnswers([]);
     setError('');
     setForm(emptyForm());
+  };
+
+  const fillDemo = (email) => {
+    setForm(prev => ({ ...prev, email, password: 'password123' }));
+    setError('');
   };
 
   const validateRegister = () => {
@@ -196,274 +208,321 @@ const Auth = () => {
   };
 
   const title = mode === 'login'
-    ? 'Welcome back'
+    ? 'Authenticated Access'
     : mode === 'register'
-      ? 'Create account'
+      ? 'Identity Registration'
       : recoveryStep === 'questions'
-        ? 'Answer your questions'
-        : 'Reset password';
+        ? 'Security Verification'
+        : 'Passkey Recovery';
 
   const subtitle = mode === 'login'
-    ? 'Sign in to continue chatting'
+    ? 'Establish cryptographically ratified socket session & instantiate chat context.'
     : mode === 'register'
-      ? 'Join the conversation — recovery questions keep you safe'
+      ? 'Create identity token & configure squircle persona avatar.'
       : recoveryStep === 'questions'
-        ? `Confirm the answers for ${form.email}`
-        : 'Use the security questions you chose at signup';
+        ? `Confirm the security answers for ${form.email}`
+        : 'Verify security questions to rotate session passkey.';
 
   return (
-    <div className="auth-bg">
-      <div className="auth-glow auth-glow-1" />
-      <div className="auth-glow auth-glow-2" />
+    <div className="auth-chamber">
+      {/* Ambient Maroon & Gold Scrims */}
+      <div className="scrim-glow scrim-glow--maroon" />
+      <div className="scrim-glow scrim-glow--gold" />
 
-      <Link
-        to="/"
-        style={{
-          position: 'absolute',
-          top: '24px',
-          left: '24px',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          color: '#94a3b8',
-          textDecoration: 'none',
-          fontSize: '0.9rem',
-          fontWeight: 500,
-          background: 'rgba(255, 255, 255, 0.05)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          padding: '8px 16px',
-          borderRadius: '999px',
-          backdropFilter: 'blur(10px)',
-          zIndex: 10,
-          transition: 'all 0.2s',
-        }}
-      >
-        ← Back to Homepage
-      </Link>
-
-      <div className="auth-card">
-        {/* Logo */}
-        <div className="auth-logo">
-          <div className="auth-logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </div>
-          <span className="auth-logo-text">NexChat</span>
+      {/* Editorial Top Technical Bar */}
+      <header className="auth-chamber__header">
+        <Link to="/" className="terminal-back">
+          <span className="terminal-back__arrow">←</span>
+          <span>[00] RETURN TO TRANSMISSION TERMINAL</span>
+        </Link>
+        <div className="terminal-ratified">
+          <span className="ratified-dot"></span>
+          <span className="ratified-text">
+            ENCLAVE RATIFIED <span className="ratified-dim">//</span> TLS 1.3 <span className="ratified-dim">//</span> SESSION READY
+          </span>
         </div>
+      </header>
 
-        <h1 className="auth-title">{title}</h1>
-        <p className="auth-subtitle">{subtitle}</p>
+      {/* Monolithic Authentication Card */}
+      <div className="auth-surface-wrap">
+        <section className="auth-surface">
+          {/* Top Hairline Highlight */}
+          <div className="surface-hairline" />
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          {mode === 'register' && (
-            <>
-              <div className="form-group">
-                <label>Full Name</label>
-                <div className="input-wrap">
-                  <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                  </svg>
-                  <input name="fullname" placeholder="John Doe" value={form.fullname} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Username</label>
-                <div className="input-wrap">
-                  <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                  </svg>
-                  <input name="username" placeholder="johndoe" value={form.username} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Gender</label>
-                <div className="gender-select">
-                  <button
-                    type="button"
-                    className={`gender-btn ${form.gender === 'male' ? 'active' : ''}`}
-                    onClick={() => setForm(prev => ({ ...prev, gender: 'male' }))}
-                  >
-                    <span>👦</span> Male
-                  </button>
-                  <button
-                    type="button"
-                    className={`gender-btn ${form.gender === 'female' ? 'active' : ''}`}
-                    onClick={() => setForm(prev => ({ ...prev, gender: 'female' }))}
-                  >
-                    <span>👧</span> Female
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-
-          {(mode !== 'recovery' || recoveryStep === 'email') && (
-            <div className="form-group">
-              <label>Email</label>
-              <div className="input-wrap">
-                <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                <input name="email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} />
-              </div>
+          {/* Monogram & Title */}
+          <div className="surface-header">
+            <div className="surface-monogram">
+              <span className="monogram-lock">🔐</span>
             </div>
-          )}
-
-          {(mode === 'login' || mode === 'register') && (
-            <div className="form-group">
-              <label>Password</label>
-              <div className="input-wrap">
-                <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handleChange} />
-              </div>
+            <div className="surface-badge">
+              <span>NEXCHAT // SECURE DISPATCH</span>
             </div>
-          )}
+            <h1 className="surface-title">{title}</h1>
+            <p className="surface-subtitle">{subtitle}</p>
+          </div>
 
-          {mode === 'login' && (
+          {/* Triple Segment Switcher */}
+          <div className="auth-segment-grid">
             <button
               type="button"
-              className="auth-forgot"
+              className={`segment-tab ${mode === 'login' ? 'segment-tab--active' : ''}`}
+              onClick={() => switchMode('login')}
+            >
+              <span>Sign In</span>
+              {mode === 'login' && <div className="tab-indicator" />}
+            </button>
+            <button
+              type="button"
+              className={`segment-tab ${mode === 'register' ? 'segment-tab--active' : ''}`}
+              onClick={() => switchMode('register')}
+            >
+              <span>Sign Up</span>
+              {mode === 'register' && <div className="tab-indicator" />}
+            </button>
+            <button
+              type="button"
+              className={`segment-tab ${mode === 'recovery' ? 'segment-tab--active' : ''}`}
               onClick={() => switchMode('recovery')}
             >
-              Forgot password?
+              <span>Recovery</span>
+              {mode === 'recovery' && <div className="tab-indicator" />}
             </button>
-          )}
+          </div>
 
-          {mode === 'register' && (
-            <div className="security-block">
-              <div className="security-block__title">Account recovery</div>
-              <p className="security-block__hint">
-                Choose three questions. Answers are hashed and only used to reset your password.
-              </p>
-
-              {form.securityAnswers.map((entry, index) => (
-                <div className="security-row" key={index}>
-                  <select
-                    className="auth-select"
-                    value={entry.questionId}
-                    onChange={(event) => handleQuestionChange(index, event.target.value)}
-                    aria-label={`Security question ${index + 1}`}
-                  >
-                    {catalog.map(question => (
-                      <option key={question.questionId} value={question.questionId}>
-                        {question.question}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    className="auth-answer-input"
-                    placeholder="Your answer"
-                    value={entry.answer}
-                    onChange={(event) => handleAnswerChange(index, event.target.value)}
-                    autoComplete="off"
-                    aria-label={`Answer for security question ${index + 1}`}
-                  />
-                </div>
+          {/* Fast Dispatch One-Click Demo Bar (Sign In mode) */}
+          {mode === 'login' && (
+            <div className="fast-dispatch-row">
+              <span className="fast-dispatch-label">FAST DEMO:</span>
+              {DEMO_FILLS.map((demo) => (
+                <button
+                  key={demo.email}
+                  type="button"
+                  onClick={() => fillDemo(demo.email)}
+                  className="fast-dispatch-btn"
+                >
+                  {demo.label}
+                </button>
               ))}
             </div>
           )}
 
-          {mode === 'recovery' && recoveryStep === 'questions' && (
-            <>
-              {recoveryQuestions.map((question, index) => (
-                <div className="form-group" key={question.questionId}>
-                  <label>{question.question}</label>
-                  <div className="input-wrap">
-                    <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                      <line x1="12" y1="17" x2="12.01" y2="17"/>
-                    </svg>
+          {/* Form */}
+          <form className="auth-dispatch-form" onSubmit={handleSubmit}>
+            {mode === 'register' && (
+              <>
+                <div className="dispatch-field">
+                  <div className="field-label-row">
+                    <label className="field-label">FULL NAME</label>
+                  </div>
+                  <div className="field-input-wrap">
                     <input
-                      placeholder="Your answer"
-                      value={recoveryAnswers[index]?.answer || ''}
-                      onChange={(event) => handleRecoveryAnswerChange(index, event.target.value)}
-                      autoComplete="off"
+                      name="fullname"
+                      placeholder="Alex Rivera"
+                      value={form.fullname}
+                      onChange={handleChange}
+                      className="field-input"
                     />
                   </div>
                 </div>
-              ))}
 
-              <div className="form-group">
-                <label>New password</label>
-                <div className="input-wrap">
-                  <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                  </svg>
+                <div className="dispatch-field">
+                  <div className="field-label-row">
+                    <label className="field-label">USERNAME</label>
+                    <span className="field-tag">UNIQUE HANDLE</span>
+                  </div>
+                  <div className="field-input-wrap">
+                    <span className="field-prefix">@</span>
+                    <input
+                      name="username"
+                      placeholder="alex_r"
+                      value={form.username}
+                      onChange={handleChange}
+                      className="field-input field-input--prefixed"
+                    />
+                  </div>
+                </div>
+
+                <div className="dispatch-field">
+                  <div className="field-label-row">
+                    <label className="field-label">GENDER</label>
+                  </div>
+                  <div className="gender-toggle-row">
+                    <button
+                      type="button"
+                      className={`gender-chip ${form.gender === 'male' ? 'gender-chip--active' : ''}`}
+                      onClick={() => setForm(prev => ({ ...prev, gender: 'male' }))}
+                    >
+                      <span>👦</span> Male
+                    </button>
+                    <button
+                      type="button"
+                      className={`gender-chip ${form.gender === 'female' ? 'gender-chip--active' : ''}`}
+                      onClick={() => setForm(prev => ({ ...prev, gender: 'female' }))}
+                    >
+                      <span>👧</span> Female
+                    </button>
+                  </div>
+                </div>
+
+                <div className="dispatch-field">
+                  <div className="field-label-row">
+                    <label className="field-label">PERSONA SQUIRCLE AVATAR</label>
+                    <span className="field-tag">UTF-8 LIGHTWEIGHT</span>
+                  </div>
+                  <EmojiAvatarPicker
+                    selected={form.profilepicture || '🦊'}
+                    onSelect={(emoji) => setForm(prev => ({ ...prev, profilepicture: emoji }))}
+                    label=""
+                  />
+                </div>
+              </>
+            )}
+
+            {(mode !== 'recovery' || recoveryStep === 'email') && (
+              <div className="dispatch-field">
+                <div className="field-label-row">
+                  <label className="field-label">IDENTIFIER // WORK EMAIL (RFC 5322)</label>
+                  <span className="field-tag">TLS-ENCRYPTED</span>
+                </div>
+                <div className="field-input-wrap">
                   <input
-                    name="password"
-                    type="password"
-                    placeholder="At least 6 characters"
-                    value={form.password}
+                    name="email"
+                    type="email"
+                    placeholder="alex@example.com"
+                    value={form.email}
                     onChange={handleChange}
+                    className="field-input"
                   />
                 </div>
               </div>
-            </>
-          )}
-
-          {error && (
-            <div className="auth-error">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              {error}
-            </div>
-          )}
-
-          <button className="auth-btn" type="submit" disabled={loading}>
-            {loading ? (
-              <span className="spinner" />
-            ) : mode === 'login' ? (
-              'Sign In'
-            ) : mode === 'register' ? (
-              'Create Account'
-            ) : recoveryStep === 'email' ? (
-              'Find My Questions'
-            ) : (
-              'Reset Password'
             )}
-          </button>
-        </form>
 
-        <p className="auth-switch">
-          {mode === 'register' ? (
-            <>
-              Already have an account?
-              <button onClick={() => switchMode('login')}> Sign in</button>
-            </>
-          ) : mode === 'recovery' ? (
-            <>
-              Remembered your password?
-              <button onClick={() => switchMode('login')}> Sign in</button>
-            </>
-          ) : (
-            <>
-              Don&apos;t have an account?
-              <button onClick={() => switchMode('register')}> Sign up</button>
-            </>
-          )}
-        </p>
+            {(mode === 'login' || mode === 'register') && (
+              <div className="dispatch-field">
+                <div className="field-label-row">
+                  <label className="field-label">MASTER PASSKEY // ZERO-LEAK</label>
+                  {mode === 'login' && (
+                    <button
+                      type="button"
+                      className="field-link"
+                      onClick={() => switchMode('recovery')}
+                    >
+                      Forgot Passkey?
+                    </button>
+                  )}
+                </div>
+                <div className="field-input-wrap">
+                  <input
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••••••"
+                    value={form.password}
+                    onChange={handleChange}
+                    className="field-input font-mono"
+                  />
+                  <button
+                    type="button"
+                    className="passkey-toggle"
+                    onClick={() => setShowPassword(p => !p)}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>
+            )}
 
-        {mode === 'recovery' && recoveryStep === 'questions' && (
-          <p className="auth-switch auth-switch--secondary">
-            <button onClick={() => {
-              setRecoveryStep('email');
-              setRecoveryQuestions([]);
-              setRecoveryAnswers([]);
-              setError('');
-            }}>
-              Use a different email
+            {mode === 'register' && (
+              <div className="security-recovery-box">
+                <div className="recovery-title">Account Recovery Enclave</div>
+                <p className="recovery-desc">
+                  Choose 3 security questions. Answers are hashed with bcrypt and only used to reset your passkey.
+                </p>
+
+                {form.securityAnswers.map((entry, index) => (
+                  <div className="recovery-row" key={index}>
+                    <select
+                      className="recovery-select"
+                      value={entry.questionId}
+                      onChange={(e) => handleQuestionChange(index, e.target.value)}
+                    >
+                      {catalog.map(q => (
+                        <option key={q.questionId} value={q.questionId}>
+                          {q.question}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      className="recovery-input"
+                      placeholder="Your secret answer"
+                      value={entry.answer}
+                      onChange={(e) => handleAnswerChange(index, e.target.value)}
+                      autoComplete="off"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {mode === 'recovery' && recoveryStep === 'questions' && (
+              <>
+                {recoveryQuestions.map((q, index) => (
+                  <div className="dispatch-field" key={q.questionId}>
+                    <label className="field-label">{q.question}</label>
+                    <input
+                      className="field-input"
+                      placeholder="Your verified answer"
+                      value={recoveryAnswers[index]?.answer || ''}
+                      onChange={(e) => handleRecoveryAnswerChange(index, e.target.value)}
+                      autoComplete="off"
+                    />
+                  </div>
+                ))}
+
+                <div className="dispatch-field">
+                  <label className="field-label">NEW PASSKEY (MIN 6 CHARS)</label>
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="New secure passkey"
+                    value={form.password}
+                    onChange={handleChange}
+                    className="field-input"
+                  />
+                </div>
+              </>
+            )}
+
+            {error && (
+              <div className="auth-error-banner">
+                <span className="error-icon">⚠</span>
+                <span>{error}</span>
+              </div>
+            )}
+
+            <button className="auth-submit-btn" type="submit" disabled={loading}>
+              {loading ? (
+                <span className="spinner-auth" />
+              ) : mode === 'login' ? (
+                'Authenticate & Enter Workspace →'
+              ) : mode === 'register' ? (
+                'Ratify Identity & Enter Chat →'
+              ) : recoveryStep === 'email' ? (
+                'Locate Security Enclave →'
+              ) : (
+                'Reset Master Passkey →'
+              )}
             </button>
-          </p>
-        )}
+          </form>
+
+          {/* Security Footnote */}
+          <div className="surface-footer">
+            <span className="surface-footer__icon">🛡️</span>
+            <p className="surface-footer__text">
+              Protected by edge-routed session encryption &amp; HttpOnly authentication tokens.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );

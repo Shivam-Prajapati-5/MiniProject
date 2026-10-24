@@ -98,6 +98,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfileAvatar = async (emoji) => {
+    const { data } = await api.put('/auth/avatar', { avatar: emoji });
+    if (data?.user) {
+      persistUser(data.user);
+    }
+    return data;
+  };
+
   const logout = async () => {
     try {
       await api.post('/auth/logout');
@@ -117,6 +125,7 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         resetPassword,
+        updateProfileAvatar,
         logout,
       }}
     >

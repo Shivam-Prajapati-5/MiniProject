@@ -19,6 +19,7 @@ export const ChatProvider = ({ children }) => {
 
   const [users, setUsers] = useState([])
   const [loadingUsers, setLoadingUsers] = useState(false)
+  const [pendingRequests, setPendingRequests] = useState([])
 
   const [selectedUser, setSelectedUser] = useState(null)
   const [activeConversationId, setActiveConversationId] = useState(null)
@@ -49,40 +50,86 @@ export const ChatProvider = ({ children }) => {
     })
   }, [])
 
-  /* ── Load contacts and existing conversations ── */
-  useEffect(() => {
-    if (!currentUserId) return undefined
-
-    let cancelled = false
+  /* ── Load contacts (friends + existing conversations) and pending requests ── */
+  const fetchFriends = useCallback(async () => {
+    if (!currentUserId) return
     setLoadingUsers(true)
+    try {
+      const [friendsRes, conversationsRes, requestsRes] = await Promise.all([
+        api.get('/friends'),
+        api.get('/message/conversations', { params: { limit: 100 } }),
+        api.get('/friends/requests'),
+      ])
 
-    Promise.all([
-      api.get('/auth/users', { params: { limit: 100 } }),
-      api.get('/message/conversations', { params: { limit: 100 } }),
-    ])
-      .then(([usersResponse, conversationsResponse]) => {
-        if (cancelled) return
+      const friendsList = friendsRes.data.friends ?? []
+      const conversationsList = conversationsRes.data.conversations ?? []
+      setPendingRequests(requestsRes.data.requests ?? [])
 
-        setUsers(usersResponse.data.users ?? [])
-
-        const mapping = {}
-        for (const conversation of conversationsResponse.data.conversations ?? []) {
-          if (conversation.otherParticipant?._id) {
-            mapping[String(conversation.otherParticipant._id)] = String(conversation._id)
-          }
+      // Map conversation IDs
+      const mapping = {}
+      const conversationUsers = []
+      for (const conversation of conversationsList) {
+        if (conversation.otherParticipant?._id) {
+          mapping[String(conversation.otherParticipant._id)] = String(conversation._id)
+          conversationUsers.push(conversation.otherParticipant)
         }
+      }
+      setConversationMapping(mapping)
 
-        setConversationMapping(mapping)
-      })
-      .catch(err => console.error('Load chat data failed:', err))
-      .finally(() => {
-        if (!cancelled) setLoadingUsers(false)
-      })
+      // Merge friends and conversation participants without duplicates
+      const seenIds = new Set()
+      const combinedUsers = []
 
-    return () => {
-      cancelled = true
+      for (const u of [...friendsList, ...conversationUsers]) {
+        const id = String(u._id)
+        if (!seenIds.has(id)) {
+          seenIds.add(id)
+          combinedUsers.push(u)
+        }
+      }
+
+      setUsers(combinedUsers)
+    } catch (err) {
+      console.error('Load friends/chat data failed:', err)
+    } finally {
+      setLoadingUsers(false)
     }
   }, [currentUserId, setConversationMapping])
+
+  const fetchPendingRequests = useCallback(async () => {
+    try {
+      const { data } = await api.get('/friends/requests')
+      setPendingRequests(data.requests ?? [])
+    } catch (err) {
+      console.error('Fetch pending requests failed:', err)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchFriends()
+  }, [fetchFriends])
+
+  const searchUsers = useCallback(async (query) => {
+    const { data } = await api.get('/friends/search', { params: { q: query } })
+    return data.users ?? []
+  }, [])
+
+  const sendFriendRequest = useCallback(async (targetUserId) => {
+    const { data } = await api.post(`/friends/request/${targetUserId}`)
+    return data
+  }, [])
+
+  const acceptFriendRequest = useCallback(async (requestId) => {
+    const { data } = await api.post(`/friends/accept/${requestId}`)
+    await fetchFriends()
+    return data
+  }, [fetchFriends])
+
+  const declineFriendRequest = useCallback(async (requestId) => {
+    const { data } = await api.post(`/friends/decline/${requestId}`)
+    await fetchPendingRequests()
+    return data
+  }, [fetchPendingRequests])
 
   const loadConversations = useCallback(async () => {
     try {
@@ -367,11 +414,27 @@ export const ChatProvider = ({ children }) => {
 
     socket.on('connect', handleConnect)
     socket.on('disconnect', handleDisconnect)
+    const handleFriendRequestReceived = (request) => {
+      setPendingRequests(prev => [request, ...prev.filter(r => r._id !== request._id)])
+    }
+
+    const handleFriendRequestAccepted = ({ friend, conversationId }) => {
+      setUsers(prev => {
+        if (prev.some(u => String(u._id) === String(friend._id))) return prev
+        return [friend, ...prev]
+      })
+      if (conversationId && friend._id) {
+        setConversationMapping({ [String(friend._id)]: String(conversationId) })
+      }
+    }
+
     socket.on('connect_error', handleConnectError)
     socket.on('presence:state', handlePresenceState)
     socket.on('presence:update', handlePresenceUpdate)
     socket.on('message:new', handleNewMessage)
     socket.on('typing:update', handleTyping)
+    socket.on('friend:request_received', handleFriendRequestReceived)
+    socket.on('friend:request_accepted', handleFriendRequestAccepted)
 
     return () => {
       for (const timer of typingTimersRef.current.values()) clearTimeout(timer)
@@ -383,6 +446,8 @@ export const ChatProvider = ({ children }) => {
       socket.off('presence:update', handlePresenceUpdate)
       socket.off('message:new', handleNewMessage)
       socket.off('typing:update', handleTyping)
+      socket.off('friend:request_received', handleFriendRequestReceived)
+      socket.off('friend:request_accepted', handleFriendRequestAccepted)
       socket.disconnect()
       socketRef.current = null
       setConnected(false)
@@ -408,6 +473,13 @@ export const ChatProvider = ({ children }) => {
     <ChatContext.Provider value={{
       users,
       loadingUsers,
+      pendingRequests,
+      fetchFriends,
+      fetchPendingRequests,
+      searchUsers,
+      sendFriendRequest,
+      acceptFriendRequest,
+      declineFriendRequest,
       selectedUser,
       selectUser,
       activeConversationId,

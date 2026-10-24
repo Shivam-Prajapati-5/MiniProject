@@ -107,24 +107,24 @@ const MessageInput = () => {
 
       <style>{`
         .msg-input-bar {
-          padding: 14px 20px 18px;
-          border-top: 1px solid var(--border-mist);
-          background: var(--bg-chat);
+          padding: 12px 18px 16px;
+          border-top: 1px solid rgba(198, 161, 91, 0.20);
+          background: #141315;
           flex-shrink: 0;
         }
         .msg-input-wrap {
           display: flex;
           align-items: flex-end;
           gap: 10px;
-          background: var(--bg-input);
-          border: 1px solid var(--border-mist);
-          border-radius: var(--r-md);
-          padding: 10px 10px 10px 16px;
+          background: #18171A;
+          border: 1px solid rgba(198, 161, 91, 0.22);
+          border-radius: 6px;
+          padding: 8px 10px 8px 14px;
           transition: border-color var(--t-fast), box-shadow var(--t-fast);
         }
         .msg-input-wrap:focus-within {
-          border-color: var(--teal-mid);
-          box-shadow: 0 0 0 3px rgba(23, 168, 196, 0.09);
+          border-color: #E0C58A;
+          box-shadow: 0 0 0 1px #E0C58A;
         }
         .msg-input__textarea {
           flex: 1;
@@ -133,46 +133,49 @@ const MessageInput = () => {
           outline: none;
           resize: none;
           color: var(--text-primary);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 14px;
+          font-family: var(--font-sans);
+          font-size: 13.5px;
           font-weight: 400;
-          line-height: 1.55;
+          line-height: 1.5;
           min-height: 22px;
           max-height: 120px;
           overflow-y: auto;
-          caret-color: var(--teal-bright);
+          caret-color: #E0C58A;
         }
         .msg-input__textarea::placeholder { color: var(--text-muted); }
         .msg-input__send {
-          width: 36px;
-          height: 36px;
-          border-radius: var(--r-sm);
-          border: none;
-          background: var(--teal-dark);
+          width: 34px;
+          height: 34px;
+          border-radius: 4px;
+          border: 1px solid rgba(198, 161, 91, 0.2);
+          background: #232126;
           color: var(--text-muted);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           flex-shrink: 0;
-          transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+          transition: all var(--t-fast);
         }
         .msg-input__send svg { width: 15px; height: 15px; }
         .msg-input__send--active {
-          background: var(--amber);
-          color: var(--mint-text);
+          background: #4A1525;
+          border-color: rgba(198, 161, 91, 0.45);
+          color: #E0C58A;
+          box-shadow: 0 2px 8px rgba(74, 21, 37, 0.4);
         }
         .msg-input__send--active:hover {
-          background: var(--amber-hover);
-          transform: scale(1.05);
+          background: #702A3C;
+          border-color: #E0C58A;
+          transform: translateY(-1px);
         }
         .msg-input__send:disabled { cursor: not-allowed; }
         .msg-send-spinner {
           display: inline-block;
           width: 14px;
           height: 14px;
-          border: 2px solid rgba(11, 42, 35, 0.3);
-          border-top-color: var(--mint-text);
+          border: 2px solid rgba(224, 197, 138, 0.3);
+          border-top-color: #E0C58A;
           border-radius: 50%;
           animation: spin 0.7s linear infinite;
         }
