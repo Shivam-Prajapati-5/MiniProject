@@ -8,6 +8,7 @@ import Avatar from './Avatar'
 const ChatPanel = () => {
   const {
     selectedUser,
+    selectUser,
     messages,
     loadingMessages,
     hasMoreMessages,
@@ -57,14 +58,21 @@ const ChatPanel = () => {
     <main className="chat-panel">
       {/* ── Header ── */}
       <div className="chat-panel__header">
-        <Avatar user={selectedUser} size={40} showOnline={true} isOnline={isOnline} />
+        <button
+          className="chat-panel__back-btn"
+          onClick={() => selectUser(null)}
+          aria-label="Back to contacts list"
+          title="Back to contacts"
+        >
+          ←
+        </button>
+        <Avatar user={selectedUser} size={38} showOnline={true} isOnline={isOnline} />
         <div className="chat-panel__header-info">
           <span className="chat-panel__header-name">{selectedUser.fullname}</span>
           <span className={`chat-panel__header-sub ${isOnline ? 'chat-panel__header-sub--online' : ''}`}>
             {isOnline ? 'Online' : 'Offline'} · @{selectedUser.username}
           </span>
         </div>
-        {/* Decorative teal accent line */}
         <div className="chat-panel__header-accent" />
       </div>
 
@@ -119,9 +127,13 @@ const ChatPanel = () => {
           flex: 1;
           display: flex;
           flex-direction: column;
-          background: #141315;
+          background: rgba(20, 19, 23, 0.72);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
           overflow: hidden;
           animation: fadeIn 300ms var(--ease);
+          position: relative;
+          z-index: 5;
         }
         .chat-panel--empty {
           align-items: stretch;
@@ -135,9 +147,29 @@ const ChatPanel = () => {
           gap: 12px;
           padding: 12px 20px;
           border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: #18171A;
+          background: rgba(24, 23, 28, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           flex-shrink: 0;
           position: relative;
+        }
+        .chat-panel__back-btn {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 4px;
+          background: rgba(35, 33, 38, 0.8);
+          border: 1px solid rgba(198, 161, 91, 0.25);
+          color: #E0C58A;
+          cursor: pointer;
+          font-size: 16px;
+          margin-right: 2px;
+        }
+        .chat-panel__back-btn:hover {
+          background: #4A1525;
+          color: #FFFFFF;
         }
         .chat-panel__header-info {
           flex: 1;
@@ -155,6 +187,18 @@ const ChatPanel = () => {
           font-family: var(--font-mono);
           font-size: 11px;
           color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+          .chat-panel__back-btn {
+            display: inline-flex;
+          }
+          .chat-panel__header {
+            padding: 10px 14px;
+          }
+          .chat-panel__messages {
+            padding: 14px 12px calc(14px + env(safe-area-inset-bottom, 0px));
+          }
         }
         .chat-panel__header-sub--online {
           color: #10B981;
@@ -174,11 +218,12 @@ const ChatPanel = () => {
         .chat-panel__messages {
           flex: 1;
           overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
           padding: 20px 24px;
           display: flex;
           flex-direction: column;
           gap: 8px;
-          background: #141315;
+          background: transparent;
           background-image: radial-gradient(rgba(198, 161, 91, 0.03) 1px, transparent 0);
           background-size: 24px 24px;
         }

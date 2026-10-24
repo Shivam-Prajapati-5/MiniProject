@@ -48,7 +48,7 @@ const ProfilePanel = ({ onClose }) => {
         <div className="drawer-header">
           <div className="drawer-header__titles">
             <h2 className="drawer-title">Profile &amp; Settings</h2>
-            <p className="drawer-subtitle">Identity persona, account enclave &amp; session controls</p>
+            <p className="drawer-subtitle">Manage your profile, avatar, and account settings</p>
           </div>
           <button className="drawer-close-btn" onClick={onClose} aria-label="Close settings">
             ✕
@@ -70,7 +70,7 @@ const ProfilePanel = ({ onClose }) => {
 
             <div className="socket-pill">
               <span className="socket-dot"></span>
-              <span className="socket-text">SOCKET PEER: @{authUser.username}</span>
+              <span className="socket-text">Active Now</span>
             </div>
 
             <div className="handle-copy-row">
@@ -85,8 +85,8 @@ const ProfilePanel = ({ onClose }) => {
           <section className="drawer-section">
             <div className="section-head">
               <div>
-                <span className="section-label">PERSONA SQUIRCLE GLYPH</span>
-                <span className="section-sub">18 Curated UTF-8 Tokens</span>
+                <span className="section-label">PROFILE AVATAR</span>
+                <span className="section-sub">Choose your emoji avatar</span>
               </div>
               <button
                 className="picker-toggle-btn"
@@ -101,7 +101,7 @@ const ProfilePanel = ({ onClose }) => {
                 <EmojiAvatarPicker
                   selected={authUser.profilepicture}
                   onSelect={handleSelectEmoji}
-                  label={savingAvatar ? 'Saving persona token…' : 'Select New Glyph'}
+                  label={savingAvatar ? 'Saving avatar…' : 'Select Avatar'}
                 />
               </div>
             )}
@@ -109,19 +109,19 @@ const ProfilePanel = ({ onClose }) => {
 
           {/* 4. Identity Credentials */}
           <section className="drawer-section">
-            <span className="section-label">CRYPTOGRAPHIC SESSION IDENTITY</span>
+            <span className="section-label">ACCOUNT DETAILS</span>
             <div className="meta-card">
               <div className="meta-row">
-                <span className="meta-label">Primary Account Email</span>
+                <span className="meta-label">Email Address</span>
                 <span className="meta-val">{authUser.email}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label">Identity Handle</span>
+                <span className="meta-label">Username</span>
                 <span className="meta-val font-mono">@{authUser.username}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label">Enclave Storage</span>
-                <span className="meta-tag">HTTPONLY // TLS 1.3</span>
+                <span className="meta-label">Session Status</span>
+                <span className="meta-tag">Active</span>
               </div>
             </div>
           </section>
@@ -133,7 +133,7 @@ const ProfilePanel = ({ onClose }) => {
               onClick={logout}
               type="button"
             >
-              <span>Terminate Session (Sign Out)</span>
+              <span>Sign Out</span>
             </button>
           </section>
         </div>
@@ -142,9 +142,9 @@ const ProfilePanel = ({ onClose }) => {
         <div className="drawer-footer">
           <div className="footer-status-row">
             <span className="footer-beacon"></span>
-            <span>Enclave State: Active &amp; Synced</span>
+            <span>Status: Online</span>
           </div>
-          <span className="footer-proto">NexChat v2.4</span>
+          <span className="footer-proto">NexChat</span>
         </div>
       </div>
 
@@ -167,9 +167,11 @@ const ProfilePanel = ({ onClose }) => {
           width: 420px;
           max-width: 92vw;
           z-index: 201;
-          background: #141315;
-          border-left: 1px solid rgba(198, 161, 91, 0.22);
-          box-shadow: -15px 0 50px rgba(0, 0, 0, 0.7);
+          background: rgba(20, 19, 23, 0.86);
+          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
+          border-left: 1px solid rgba(198, 161, 91, 0.25);
+          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.75), inset 1px 0 0 rgba(255, 255, 255, 0.08);
           display: flex;
           flex-direction: column;
           animation: slideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -187,7 +189,9 @@ const ProfilePanel = ({ onClose }) => {
         .drawer-header {
           padding: 20px 24px;
           border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: #18171A;
+          background: rgba(24, 23, 28, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
@@ -210,7 +214,7 @@ const ProfilePanel = ({ onClose }) => {
           width: 28px;
           height: 28px;
           border-radius: 4px;
-          background: #201F21;
+          background: rgba(32, 31, 33, 0.8);
           border: 1px solid rgba(198, 161, 91, 0.2);
           color: #A39E9B;
           display: flex;
@@ -229,17 +233,21 @@ const ProfilePanel = ({ onClose }) => {
         .drawer-body {
           flex: 1;
           overflow-y: auto;
-          padding: 24px;
+          -webkit-overflow-scrolling: touch;
+          padding: 24px 24px calc(30px + env(safe-area-inset-bottom, 16px));
           display: flex;
           flex-direction: column;
           gap: 24px;
         }
 
         .drawer-card {
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.18);
-          border-radius: 6px;
+          background: rgba(28, 26, 32, 0.65);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(198, 161, 91, 0.2);
+          border-radius: 8px;
           padding: 20px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
         .drawer-card--center {
@@ -356,48 +364,57 @@ const ProfilePanel = ({ onClose }) => {
         }
 
         .picker-dropdown {
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          border-radius: 6px;
-          padding: 12px;
+          background: rgba(26, 24, 30, 0.75);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(198, 161, 91, 0.25);
+          border-radius: 8px;
+          padding: 14px;
           animation: fadeIn 0.2s ease;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .meta-card {
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.18);
-          border-radius: 6px;
-          divide-y: 1px solid rgba(198, 161, 91, 0.12);
+          background: rgba(26, 24, 30, 0.65);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(198, 161, 91, 0.2);
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
         .meta-row {
-          padding: 10px 14px;
+          padding: 12px 14px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           font-size: 12px;
-          border-bottom: 1px solid rgba(198, 161, 91, 0.1);
+          border-bottom: 1px solid rgba(198, 161, 91, 0.12);
         }
         .meta-row:last-child { border-bottom: none; }
 
-        .meta-label { color: #77777D; }
-        .meta-val { color: #F5F2ED; font-weight: 500; }
+        .meta-label { color: #A39E9B; font-weight: 500; }
+        .meta-val { color: #F5F2ED; font-weight: 600; }
         .meta-tag {
           font-family: var(--font-mono);
-          font-size: 9px;
+          font-size: 9.5px;
+          font-weight: 600;
           color: #E0C58A;
-          background: rgba(198, 161, 91, 0.12);
-          padding: 2px 6px;
-          border-radius: 3px;
+          background: rgba(198, 161, 91, 0.14);
+          border: 1px solid rgba(198, 161, 91, 0.25);
+          padding: 2px 8px;
+          border-radius: 999px;
         }
 
         .drawer-logout-btn {
           width: 100%;
-          background: #1C1B1D;
-          border: 1px solid rgba(255, 180, 171, 0.3);
+          background: rgba(74, 21, 37, 0.35);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 180, 171, 0.35);
           color: #FFB4AB;
           padding: 12px;
-          border-radius: 4px;
+          border-radius: 6px;
           font-size: 11.5px;
           font-weight: 600;
           text-transform: uppercase;
@@ -406,13 +423,16 @@ const ProfilePanel = ({ onClose }) => {
           transition: all 0.18s;
         }
         .drawer-logout-btn:hover {
-          background: rgba(147, 0, 10, 0.3);
+          background: rgba(147, 0, 10, 0.45);
           border-color: #FFB4AB;
+          color: #FFF;
         }
 
         .drawer-footer {
-          padding: 14px 24px;
-          background: #100F12;
+          padding: 14px 24px calc(14px + env(safe-area-inset-bottom, 0px));
+          background: rgba(16, 15, 18, 0.88);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border-top: 1px solid rgba(198, 161, 91, 0.18);
           display: flex;
           align-items: center;
@@ -429,14 +449,21 @@ const ProfilePanel = ({ onClose }) => {
           color: #10B981;
         }
         .footer-beacon {
-          width: 5px;
-          height: 5px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           background: #10B981;
-          box-shadow: 0 0 4px #10B981;
+          box-shadow: 0 0 6px #10B981;
         }
         .footer-proto {
           color: #C6A15B;
+        }
+
+        @media (max-width: 480px) {
+          .drawer-panel {
+            width: 100%;
+            max-width: 100vw;
+          }
         }
       `}</style>
     </>

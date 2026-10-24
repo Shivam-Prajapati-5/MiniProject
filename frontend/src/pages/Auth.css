@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NexChat Editorial Auth Hub — Aureate Obsidian & Maroon Styles
+   NexChat Auth Hub — Clean Aureate Obsidian & Maroon Styles
    ========================================================================== */
 
 .auth-chamber {
@@ -11,64 +11,33 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 32px 16px;
-  overflow-x: hidden;
+  justify-content: flex-start;
+  padding: 24px 16px 60px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background-image: radial-gradient(rgba(198, 161, 91, 0.04) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
-/* ── Scrim Ambient Glows ── */
-.scrim-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.scrim-glow--maroon {
-  width: 600px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(74, 21, 37, 0.45) 0%, transparent 70%);
-  top: -80px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.scrim-glow--gold {
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(198, 161, 91, 0.12) 0%, transparent 70%);
-  bottom: -100px;
-  right: -50px;
-}
-
-/* ── Top Technical Breadcrumb Header ── */
+/* ── Top Header ── */
 .auth-chamber__header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  padding: 0 24px;
+  width: 100%;
+  max-width: 480px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 4px 4px 16px;
+  margin-bottom: 8px;
   border-bottom: 1px solid var(--border-gold);
-  background: rgba(20, 19, 21, 0.88);
-  backdrop-filter: blur(12px);
-  z-index: 50;
 }
 
 .terminal-back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 500;
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.18s;
@@ -82,48 +51,32 @@
   color: var(--gold-accent);
 }
 
-.terminal-ratified {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-gold);
-  padding: 4px 10px;
-  border-radius: 3px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-muted);
+.terminal-brand-pill {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.05em;
 }
 
-.ratified-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--presence-green);
-  box-shadow: 0 0 6px var(--presence-green);
-}
-
-.ratified-dim {
-  color: rgba(198, 161, 91, 0.3);
-}
-
-/* ── Monolithic Auth Surface ── */
+/* ── Main Auth Surface Card ── */
 .auth-surface-wrap {
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   position: relative;
   z-index: 10;
-  margin-top: 48px;
 }
 
 .auth-surface {
   position: relative;
-  background: rgba(24, 23, 26, 0.94);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-gold);
-  border-radius: 8px;
-  padding: 36px 32px;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(198, 161, 91, 0.2);
+  background: rgba(24, 23, 28, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(198, 161, 91, 0.28);
+  border-top-color: rgba(224, 197, 138, 0.45);
+  border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.75), 0 0 30px rgba(198, 161, 91, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 .surface-hairline {
@@ -137,49 +90,39 @@
 
 .surface-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .surface-monogram {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   margin: 0 auto 12px;
   border-radius: 6px;
   background: var(--maroon-rich);
-  border: 1px solid rgba(198, 161, 91, 0.45);
+  border: 1px solid rgba(198, 161, 91, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(74, 21, 37, 0.5);
+  box-shadow: 0 4px 14px rgba(74, 21, 37, 0.45);
 }
 
 .monogram-lock {
   font-size: 20px;
 }
 
-.surface-badge {
-  display: inline-block;
-  font-family: var(--font-cinzel);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  color: var(--gold-accent);
-  margin-bottom: 6px;
-}
-
 .surface-title {
   font-family: var(--font-serif);
-  font-size: 1.85rem;
+  font-size: 1.7rem;
   font-weight: 500;
-  letter-spacing: -0.015em;
   color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .surface-subtitle {
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.5;
   color: var(--text-muted);
-  max-width: 400px;
+  max-width: 360px;
   margin: 0 auto;
 }
 
@@ -187,11 +130,13 @@
 .auth-segment-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: var(--bg-base);
+  background: rgba(16, 15, 19, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-gold);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 3px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .segment-tab {
@@ -200,14 +145,13 @@
   border: none;
   color: var(--text-muted);
   font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 11.5px;
   font-weight: 600;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.18s;
+  text-align: center;
 }
 
 .segment-tab:hover {
@@ -216,8 +160,7 @@
 
 .segment-tab--active {
   background: var(--maroon-base);
-  color: var(--text-primary);
-  box-shadow: 0 2px 8px rgba(74, 21, 37, 0.4);
+  color: #FFFFFF;
 }
 
 .tab-indicator {
@@ -230,22 +173,23 @@
   border-radius: 99px;
 }
 
-/* ── Fast Dispatch Demo Row ── */
+/* ── Quick Demo Row ── */
 .fast-dispatch-row {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(20, 19, 21, 0.6);
   border: 1px solid var(--border-gold);
-  padding: 6px 10px;
+  padding: 8px 10px;
   border-radius: 4px;
-  margin-bottom: 20px;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  margin-bottom: 18px;
+  font-size: 11px;
   flex-wrap: wrap;
 }
 
 .fast-dispatch-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--gold-accent);
   font-weight: 600;
 }
@@ -254,8 +198,8 @@
   background: var(--bg-card);
   border: 1px solid var(--border-silver);
   color: var(--text-primary);
-  font-size: 10px;
-  padding: 3px 8px;
+  font-size: 11px;
+  padding: 4px 10px;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.15s;
@@ -270,7 +214,7 @@
 .auth-dispatch-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 15px;
 }
 
 .dispatch-field {
@@ -286,24 +230,15 @@
 }
 
 .field-label {
-  font-family: var(--font-cinzel);
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold-accent);
+  font-size: 12px;
   font-weight: 600;
-}
-
-.field-tag {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-muted);
+  color: #D7C1C4;
 }
 
 .field-link {
   background: transparent;
   border: none;
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--gold-bright);
   cursor: pointer;
   padding: 0;
@@ -329,14 +264,16 @@
 
 .field-input {
   width: 100%;
-  background: var(--bg-base);
+  background: rgba(16, 15, 19, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border-gold);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 10px 14px;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 13px;
-  transition: border-color 0.18s, box-shadow 0.18s;
+  font-size: 13.5px;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
   outline: none;
 }
 
@@ -346,7 +283,8 @@
 
 .field-input:focus {
   border-color: var(--gold-bright);
-  box-shadow: 0 0 0 1px var(--gold-bright);
+  box-shadow: 0 0 0 1px var(--gold-bright), 0 0 16px rgba(198, 161, 91, 0.15);
+  background: rgba(22, 20, 26, 0.88);
 }
 
 .field-input::placeholder {
@@ -358,14 +296,13 @@
   right: 10px;
   background: transparent;
   border: none;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--gold-accent);
   cursor: pointer;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
-/* ── Gender Chips ── */
+/* ── Gender Toggle Row ── */
 .gender-toggle-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -380,9 +317,9 @@
   background: var(--bg-base);
   border: 1px solid var(--border-gold);
   border-radius: 4px;
-  padding: 8px;
+  padding: 9px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.18s;
@@ -406,17 +343,15 @@
 }
 
 .recovery-title {
-  font-family: var(--font-cinzel);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--gold-accent);
+  font-size: 12px;
   font-weight: 600;
+  color: var(--gold-bright);
 }
 
 .recovery-desc {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .recovery-row {
@@ -464,11 +399,9 @@
   border: 1px solid rgba(198, 161, 91, 0.5);
   border-radius: 4px;
   padding: 12px;
-  color: var(--text-primary);
+  color: #FFFFFF;
   font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -479,7 +412,6 @@
 .auth-submit-btn:hover:not(:disabled) {
   background: var(--burgundy);
   border-color: var(--gold-bright);
-  color: #FFFFFF;
 }
 
 .auth-submit-btn:disabled {
@@ -499,8 +431,8 @@
 
 /* ── Surface Footer ── */
 .surface-footer {
-  margin-top: 24px;
-  padding-top: 16px;
+  margin-top: 20px;
+  padding-top: 14px;
   border-top: 1px solid var(--border-gold);
   display: flex;
   align-items: center;
@@ -516,4 +448,19 @@
   font-size: 11px;
   line-height: 1.4;
   color: var(--text-muted);
+}
+
+/* ── Responsive Mobile Adjustments ── */
+@media (max-width: 480px) {
+  .auth-chamber {
+    padding: 16px 12px calc(80px + env(safe-area-inset-bottom, 24px));
+    -webkit-overflow-scrolling: touch;
+  }
+  .auth-surface {
+    padding: 24px 16px;
+    border-radius: 8px;
+  }
+  .surface-title {
+    font-size: 1.45rem;
+  }
 }

@@ -143,11 +143,15 @@ const Sidebar = ({ onProfileClick }) => {
           max-width: 320px;
           display: flex;
           flex-direction: column;
-          background: #100F12;
+          background: rgba(16, 15, 18, 0.85);
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
           border-right: 1px solid rgba(198, 161, 91, 0.20);
+          box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
           overflow: hidden;
           animation: slideInLeft 300ms var(--ease);
           flex-shrink: 0;
+          z-index: 10;
         }
 
         /* Header */
@@ -157,7 +161,9 @@ const Sidebar = ({ onProfileClick }) => {
           padding: 14px 12px;
           gap: 8px;
           border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: #141315;
+          background: rgba(20, 19, 23, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           flex-shrink: 0;
         }
 
@@ -325,9 +331,11 @@ const Sidebar = ({ onProfileClick }) => {
         .sidebar__search-input {
           width: 100%;
           padding: 8px 30px 8px 32px;
-          background: #18171A;
+          background: rgba(24, 23, 28, 0.75);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           border: 1px solid rgba(198, 161, 91, 0.20);
-          border-radius: 4px;
+          border-radius: 6px;
           color: var(--text-primary);
           font-family: var(--font-sans);
           font-size: 12px;
@@ -354,7 +362,8 @@ const Sidebar = ({ onProfileClick }) => {
         .sidebar__list {
           flex: 1;
           overflow-y: auto;
-          padding: 4px 8px 8px;
+          -webkit-overflow-scrolling: touch;
+          padding: 4px 8px calc(14px + env(safe-area-inset-bottom, 8px));
         }
         .sidebar__empty {
           font-size: 12px;

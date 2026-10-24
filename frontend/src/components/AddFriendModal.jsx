@@ -47,13 +47,13 @@ const AddFriendModal = ({ onClose }) => {
     try {
       setActingId(targetUser._id);
       await sendFriendRequest(targetUser._id);
-      addToast(`Peer handshake dispatched to @${targetUser.username}`, 'success');
+      addToast(`Friend request sent to @${targetUser.username}`, 'success');
 
       setSearchResults(prev =>
         prev.map(u => (u._id === targetUser._id ? { ...u, friendStatus: 'pending_sent' } : u))
       );
     } catch (err) {
-      addToast(err?.response?.data?.message || 'Failed to dispatch request', 'error');
+      addToast(err?.response?.data?.message || 'Failed to send request', 'error');
     } finally {
       setActingId(null);
     }
@@ -63,7 +63,7 @@ const AddFriendModal = ({ onClose }) => {
     try {
       setActingId(requestId);
       await acceptFriendRequest(requestId);
-      addToast(`Reciprocal handshake ratified with ${senderName}!`, 'success');
+      addToast(`Connected with ${senderName}!`, 'success');
       await fetchPendingRequests();
     } catch (err) {
       addToast(err?.response?.data?.message || 'Failed to accept request', 'error');
@@ -76,7 +76,7 @@ const AddFriendModal = ({ onClose }) => {
     try {
       setActingId(requestId);
       await declineFriendRequest(requestId);
-      addToast('Handshake declined', 'info');
+      addToast('Request declined', 'info');
       await fetchPendingRequests();
     } catch (err) {
       addToast(err?.response?.data?.message || 'Failed to decline request', 'error');
@@ -88,29 +88,27 @@ const AddFriendModal = ({ onClose }) => {
   return (
     <div className="peer-modal-overlay" onClick={onClose}>
       <div className="peer-modal" onClick={(e) => e.stopPropagation()}>
-        {/* Top Gold Hairline */}
         <div className="modal-hairline" />
 
         {/* Modal Header */}
         <div className="peer-modal__header">
           <div className="peer-modal__title-group">
-            <span className="peer-modal__tag">NEXCHAT // CONTACT GATEWAY</span>
-            <h2 className="peer-modal__title">Peer Mesh Discovery</h2>
-            <p className="peer-modal__subtitle">Search verified socket handles &amp; ratify reciprocal handshakes</p>
+            <h2 className="peer-modal__title">Find Contacts</h2>
+            <p className="peer-modal__subtitle">Search users by username or name to send a friend request</p>
           </div>
           <button className="peer-modal__close" onClick={onClose} title="Close (Esc)">
             ✕
           </button>
         </div>
 
-        {/* Dual Tabs Navigation Strip */}
+        {/* Tabs */}
         <div className="peer-modal__tabs">
           <button
             type="button"
             className={`tab-btn ${activeTab === 'add' ? 'tab-btn--active' : ''}`}
             onClick={() => setActiveTab('add')}
           >
-            <span>Add New Peer</span>
+            <span>Find People</span>
             {activeTab === 'add' && <div className="tab-bottom-bar" />}
           </button>
           <button
@@ -118,7 +116,7 @@ const AddFriendModal = ({ onClose }) => {
             className={`tab-btn ${activeTab === 'requests' ? 'tab-btn--active' : ''}`}
             onClick={() => setActiveTab('requests')}
           >
-            <span>Pending Handshakes</span>
+            <span>Friend Requests</span>
             {pendingRequests.length > 0 && (
               <span className="tab-badge">{pendingRequests.length}</span>
             )}
@@ -126,9 +124,8 @@ const AddFriendModal = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Modal Body */}
+        {/* Body */}
         <div className="peer-modal__body">
-          {/* TAB 1: Add New Peer */}
           {activeTab === 'add' && (
             <div className="tab-content">
               {/* Search Bar */}
@@ -136,7 +133,7 @@ const AddFriendModal = ({ onClose }) => {
                 <span className="search-icon">🔍</span>
                 <input
                   type="text"
-                  placeholder="Search by username or name (e.g. @alex_r, Sarah)..."
+                  placeholder="Search by username or name (e.g. Alex, @sarah_c)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
@@ -147,52 +144,45 @@ const AddFriendModal = ({ onClose }) => {
                 )}
               </div>
 
-              {/* Status Row */}
+              {/* Status Header */}
               <div className="section-label-row">
-                <div className="section-label-left">
-                  <span className="dot-gold"></span>
-                  <span className="section-title">
-                    {searching
-                      ? 'SEARCHING MESH IDENTIFIERS…'
-                      : searchQuery
-                        ? `VERIFIED IDENTIFIERS // ${searchResults.length} FOUND`
-                        : 'DIRECT PEER LOOKUP'}
-                  </span>
-                </div>
-                <span className="section-meta">TLS 1.3 RATIFIED</span>
+                <span className="section-title">
+                  {searching
+                    ? 'Searching users…'
+                    : searchQuery
+                      ? `Matching Users (${searchResults.length})`
+                      : 'Search to find users'}
+                </span>
               </div>
 
               {/* Results List */}
               <div className="results-scroll">
                 {!searchQuery.trim() ? (
                   <div className="peer-empty-state">
-                    <span className="empty-icon">🔐</span>
-                    <p className="empty-title">Privacy-First Directory</p>
+                    <span className="empty-icon">🤝</span>
+                    <p className="empty-title">Connect with People</p>
                     <p className="empty-hint">
-                      Users are not broadcasted openly. Type a handle or name above to locate a peer and dispatch a handshake.
+                      Search by name or username above to find people and start chatting once they accept your request.
                     </p>
                   </div>
                 ) : searching ? (
                   <div className="peer-loading">
                     <span className="spinner-modal" />
-                    <span>Searching node directory…</span>
+                    <span>Searching directory…</span>
                   </div>
                 ) : searchResults.length === 0 ? (
                   <div className="peer-empty-state">
-                    <span className="empty-icon">⚡</span>
-                    <p className="empty-title">No Peer Found</p>
-                    <p className="empty-hint">No user matches &quot;{searchQuery}&quot;. Verify the handle and try again.</p>
+                    <span className="empty-icon">🔍</span>
+                    <p className="empty-title">No users found</p>
+                    <p className="empty-hint">No user matches &quot;{searchQuery}&quot;. Check the spelling and try again.</p>
                   </div>
                 ) : (
                   searchResults.map((user) => (
                     <div key={user._id} className="peer-card">
                       <div className="peer-card__left">
-                        <Avatar user={user} size={42} showOnline={false} />
+                        <Avatar user={user} size={40} showOnline={false} />
                         <div className="peer-card__info">
-                          <div className="peer-card__name-row">
-                            <span className="peer-card__name">{user.fullname}</span>
-                            <span className="peer-card__tag">VERIFIED</span>
-                          </div>
+                          <span className="peer-card__name">{user.fullname}</span>
                           <span className="peer-card__handle">@{user.username}</span>
                         </div>
                       </div>
@@ -204,14 +194,14 @@ const AddFriendModal = ({ onClose }) => {
                           </span>
                         ) : user.friendStatus === 'pending_sent' ? (
                           <span className="status-badge status-badge--sent">
-                            Handshake Dispatched ✓
+                            Request Sent ✓
                           </span>
                         ) : user.friendStatus === 'pending_received' ? (
                           <button
                             className="editorial-btn editorial-btn--primary"
                             onClick={() => setActiveTab('requests')}
                           >
-                            Review Request →
+                            Respond →
                           </button>
                         ) : (
                           <button
@@ -222,10 +212,7 @@ const AddFriendModal = ({ onClose }) => {
                             {actingId === user._id ? (
                               <span className="spinner-sm" />
                             ) : (
-                              <>
-                                <span>Send Peer Handshake</span>
-                                <span className="arrow">→</span>
-                              </>
+                              'Add Contact +'
                             )}
                           </button>
                         )}
@@ -237,33 +224,28 @@ const AddFriendModal = ({ onClose }) => {
             </div>
           )}
 
-          {/* TAB 2: Pending Handshakes */}
           {activeTab === 'requests' && (
             <div className="tab-content">
               <div className="section-label-row">
-                <div className="section-label-left">
-                  <span className="dot-gold"></span>
-                  <span className="section-title">
-                    INCOMING PEER HANDSHAKES ({pendingRequests.length})
-                  </span>
-                </div>
-                <span className="section-meta">RECIPROCAL APPROVAL REQUIRED</span>
+                <span className="section-title">
+                  Pending Friend Requests ({pendingRequests.length})
+                </span>
               </div>
 
               <div className="results-scroll">
                 {pendingRequests.length === 0 ? (
                   <div className="peer-empty-state">
                     <span className="empty-icon">✨</span>
-                    <p className="empty-title">No Pending Handshakes</p>
-                    <p className="empty-hint">When another peer invites you to chat, their cryptographic request will arrive here.</p>
+                    <p className="empty-title">No Pending Requests</p>
+                    <p className="empty-hint">When someone sends you a friend request, you will see it here.</p>
                   </div>
                 ) : (
                   pendingRequests.map((req) => (
                     <div key={req._id} className="peer-card">
                       <div className="peer-card__left">
-                        <Avatar user={req.sender} size={42} showOnline={false} />
+                        <Avatar user={req.sender} size={40} showOnline={false} />
                         <div className="peer-card__info">
-                          <span className="peer-card__name">{req.sender?.fullname || 'Unknown Peer'}</span>
+                          <span className="peer-card__name">{req.sender?.fullname || 'User'}</span>
                           <span className="peer-card__handle">@{req.sender?.username}</span>
                         </div>
                       </div>
@@ -274,7 +256,7 @@ const AddFriendModal = ({ onClose }) => {
                           onClick={() => handleAccept(req._id, req.sender?.fullname)}
                           disabled={actingId === req._id}
                         >
-                          {actingId === req._id ? <span className="spinner-sm" /> : 'Accept Handshake'}
+                          {actingId === req._id ? <span className="spinner-sm" /> : 'Accept'}
                         </button>
                         <button
                           className="peer-btn-decline"
@@ -292,11 +274,11 @@ const AddFriendModal = ({ onClose }) => {
           )}
         </div>
 
-        {/* Security Disclosure Footer */}
+        {/* Footer */}
         <div className="peer-modal__footer">
           <span className="footer-shield">🛡️</span>
           <p className="footer-disclosure">
-            <strong className="footer-strong">Privacy Protocol:</strong> Unconnected peers cannot inspect your presence, read message frames, or establish direct channels without reciprocal handshake ratification.
+            Only users with accepted requests will appear in your contacts list and be able to message you.
           </p>
         </div>
       </div>
@@ -305,9 +287,9 @@ const AddFriendModal = ({ onClose }) => {
         .peer-modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(10, 9, 11, 0.82);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+          background: rgba(10, 9, 11, 0.75);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           z-index: 1000;
           display: flex;
           align-items: center;
@@ -319,11 +301,18 @@ const AddFriendModal = ({ onClose }) => {
         .peer-modal {
           position: relative;
           width: 100%;
-          max-width: 580px;
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.25);
-          border-radius: 8px;
-          box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(198, 161, 91, 0.2);
+          max-width: 520px;
+          max-height: 88vh;
+          max-height: 88dvh;
+          display: flex;
+          flex-direction: column;
+          background: rgba(22, 21, 26, 0.86);
+          backdrop-filter: blur(28px) saturate(180%);
+          -webkit-backdrop-filter: blur(28px) saturate(180%);
+          border: 1px solid rgba(198, 161, 91, 0.28);
+          border-top-color: rgba(224, 197, 138, 0.45);
+          border-radius: 10px;
+          box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.85), 0 0 30px rgba(198, 161, 91, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.12);
           overflow: hidden;
           animation: popIn 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -341,31 +330,25 @@ const AddFriendModal = ({ onClose }) => {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          padding: 22px 24px 16px;
+          padding: 18px 20px 14px;
+          background: rgba(24, 23, 28, 0.85);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border-bottom: 1px solid rgba(198, 161, 91, 0.15);
-        }
-
-        .peer-modal__tag {
-          font-family: var(--font-cinzel);
-          font-size: 9px;
-          letter-spacing: 0.2em;
-          color: #C6A15B;
-          display: block;
-          margin-bottom: 4px;
         }
 
         .peer-modal__title {
           font-family: var(--font-serif);
-          font-size: 1.55rem;
+          font-size: 1.4rem;
           font-weight: 500;
           color: #F5F2ED;
-          line-height: 1.1;
+          line-height: 1.2;
         }
 
         .peer-modal__subtitle {
           font-size: 12px;
           color: #77777D;
-          margin-top: 4px;
+          margin-top: 3px;
         }
 
         .peer-modal__close {
@@ -381,6 +364,7 @@ const AddFriendModal = ({ onClose }) => {
           cursor: pointer;
           font-size: 12px;
           transition: all 0.15s;
+          flex-shrink: 0;
         }
         .peer-modal__close:hover {
           color: #F5F2ED;
@@ -391,8 +375,10 @@ const AddFriendModal = ({ onClose }) => {
         /* Tabs */
         .peer-modal__tabs {
           display: flex;
-          padding: 0 24px;
-          background: #141315;
+          padding: 0 20px;
+          background: rgba(20, 19, 23, 0.75);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
           border-bottom: 1px solid rgba(198, 161, 91, 0.15);
         }
 
@@ -400,18 +386,16 @@ const AddFriendModal = ({ onClose }) => {
           position: relative;
           background: none;
           border: none;
-          padding: 12px 18px;
+          padding: 11px 16px;
           font-family: var(--font-sans);
           font-size: 12px;
           font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
           color: #77777D;
           cursor: pointer;
           transition: color 0.18s;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
         .tab-btn:hover { color: #F5F2ED; }
         .tab-btn--active { color: #E0C58A; }
@@ -436,20 +420,25 @@ const AddFriendModal = ({ onClose }) => {
 
         /* Body */
         .peer-modal__body {
-          padding: 20px 24px;
+          padding: 16px 20px;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+          flex: 1;
         }
 
         .peer-search-bar {
           position: relative;
           display: flex;
           align-items: center;
-          background: #0F0E10;
+          background: rgba(15, 14, 18, 0.72);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           border: 1px solid rgba(198, 161, 91, 0.22);
-          border-radius: 5px;
-          padding: 10px 14px;
-          margin-bottom: 16px;
+          border-radius: 6px;
+          padding: 8px 12px;
+          margin-bottom: 14px;
         }
-        .search-icon { font-size: 14px; margin-right: 10px; }
+        .search-icon { font-size: 13px; margin-right: 8px; }
         .search-input {
           flex: 1;
           background: none;
@@ -465,37 +454,20 @@ const AddFriendModal = ({ onClose }) => {
           border: none;
           color: #77777D;
           cursor: pointer;
-          font-size: 12px;
+          font-size: 11px;
         }
 
         .section-label-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-family: var(--font-mono);
-          font-size: 10px;
-          color: #77777D;
-          margin-bottom: 12px;
-        }
-        .section-label-left {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .dot-gold {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #C6A15B;
+          margin-bottom: 10px;
         }
         .section-title {
-          color: #C6A15B;
-          letter-spacing: 0.1em;
+          font-size: 11.5px;
           font-weight: 600;
+          color: #E0C58A;
         }
 
         .results-scroll {
-          max-height: 260px;
+          max-height: 280px;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
@@ -506,19 +478,17 @@ const AddFriendModal = ({ onClose }) => {
           background: #1C1B1D;
           border: 1px solid rgba(198, 161, 91, 0.15);
           border-radius: 6px;
-          padding: 10px 14px;
+          padding: 10px 12px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 12px;
-          transition: border-color 0.18s;
+          gap: 10px;
         }
-        .peer-card:hover { border-color: rgba(198, 161, 91, 0.35); }
 
         .peer-card__left {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           min-width: 0;
         }
 
@@ -527,24 +497,13 @@ const AddFriendModal = ({ onClose }) => {
           flex-direction: column;
           min-width: 0;
         }
-        .peer-card__name-row {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
         .peer-card__name {
-          font-size: 13.5px;
+          font-size: 13px;
           font-weight: 600;
           color: #F5F2ED;
-        }
-        .peer-card__tag {
-          font-family: var(--font-cinzel);
-          font-size: 8px;
-          letter-spacing: 0.1em;
-          background: rgba(198, 161, 91, 0.15);
-          color: #E0C58A;
-          padding: 1px 4px;
-          border-radius: 2px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .peer-card__handle {
           font-family: var(--font-mono);
@@ -558,15 +517,11 @@ const AddFriendModal = ({ onClose }) => {
           color: #E0C58A;
           font-family: var(--font-sans);
           font-size: 11px;
-          letter-spacing: 0.08em;
           font-weight: 600;
-          text-transform: uppercase;
-          padding: 7px 12px;
+          padding: 6px 12px;
           border-radius: 4px;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 6px;
+          white-space: nowrap;
           transition: all 0.18s;
         }
         .peer-btn-handshake:hover:not(:disabled) {
@@ -577,7 +532,7 @@ const AddFriendModal = ({ onClose }) => {
 
         .peer-card__action-group {
           display: flex;
-          gap: 8px;
+          gap: 6px;
         }
         .peer-btn-accept {
           background: #4A1525;
@@ -585,7 +540,7 @@ const AddFriendModal = ({ onClose }) => {
           color: #E0C58A;
           font-size: 11px;
           font-weight: 600;
-          padding: 6px 12px;
+          padding: 5px 10px;
           border-radius: 4px;
           cursor: pointer;
         }
@@ -595,17 +550,17 @@ const AddFriendModal = ({ onClose }) => {
           border: 1px solid #77777D;
           color: #77777D;
           font-size: 11px;
-          padding: 6px 12px;
+          padding: 5px 10px;
           border-radius: 4px;
           cursor: pointer;
         }
         .peer-btn-decline:hover { color: #FFB4AB; border-color: #FFB4AB; }
 
         .status-badge {
-          font-family: var(--font-mono);
-          font-size: 10px;
-          padding: 4px 8px;
+          font-size: 11px;
+          padding: 3px 8px;
           border-radius: 3px;
+          white-space: nowrap;
         }
         .status-badge--friends {
           background: rgba(16, 185, 129, 0.15);
@@ -619,33 +574,32 @@ const AddFriendModal = ({ onClose }) => {
         }
 
         .peer-empty-state {
-          padding: 32px 16px;
+          padding: 28px 14px;
           text-align: center;
           color: #77777D;
         }
-        .empty-icon { font-size: 24px; display: block; margin-bottom: 8px; }
+        .empty-icon { font-size: 22px; display: block; margin-bottom: 6px; }
         .empty-title {
           font-family: var(--font-serif);
-          font-size: 1.15rem;
+          font-size: 1.1rem;
           color: #F5F2ED;
           margin-bottom: 4px;
         }
-        .empty-hint { font-size: 11.5px; max-width: 380px; margin: 0 auto; line-height: 1.5; }
+        .empty-hint { font-size: 11.5px; max-width: 320px; margin: 0 auto; line-height: 1.45; }
 
         .peer-loading {
-          padding: 30px;
+          padding: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 8px;
           color: #E0C58A;
-          font-family: var(--font-mono);
-          font-size: 11px;
+          font-size: 11.5px;
         }
 
         .spinner-modal {
-          width: 16px;
-          height: 16px;
+          width: 14px;
+          height: 14px;
           border: 2px solid rgba(224, 197, 138, 0.3);
           border-top-color: #E0C58A;
           border-radius: 50%;
@@ -656,18 +610,25 @@ const AddFriendModal = ({ onClose }) => {
         .peer-modal__footer {
           background: #141315;
           border-top: 1px solid rgba(198, 161, 91, 0.15);
-          padding: 14px 24px;
+          padding: 12px 20px;
           display: flex;
-          align-items: flex-start;
-          gap: 10px;
+          align-items: center;
+          gap: 8px;
         }
-        .footer-shield { font-size: 14px; margin-top: 2px; }
+        .footer-shield { font-size: 13px; }
         .footer-disclosure {
           font-size: 11px;
-          line-height: 1.45;
+          line-height: 1.4;
           color: #77777D;
         }
-        .footer-strong { color: #F5F2ED; }
+
+        @media (max-width: 480px) {
+          .peer-modal { max-height: 92vh; }
+          .peer-modal__header { padding: 14px 16px 12px; }
+          .peer-modal__body { padding: 12px 14px; }
+          .peer-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+          .peer-card__action { width: 100%; display: flex; justify-content: flex-end; }
+        }
       `}</style>
     </div>
   );

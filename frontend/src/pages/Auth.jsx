@@ -31,8 +31,8 @@ const emptyForm = () => ({
 });
 
 const DEMO_FILLS = [
-  { label: 'Alex Rivera (Architect)', email: 'alex@example.com' },
-  { label: 'Sarah Chen (Lead Infra)', email: 'sarah@example.com' },
+  { label: 'Alex Rivera', email: 'alex@example.com' },
+  { label: 'Sarah Chen', email: 'sarah@example.com' },
 ];
 
 const Auth = () => {
@@ -208,60 +208,54 @@ const Auth = () => {
   };
 
   const title = mode === 'login'
-    ? 'Authenticated Access'
+    ? 'Sign In'
     : mode === 'register'
-      ? 'Identity Registration'
+      ? 'Create Your Account'
       : recoveryStep === 'questions'
         ? 'Security Verification'
-        : 'Passkey Recovery';
+        : 'Reset Password';
 
   const subtitle = mode === 'login'
-    ? 'Establish cryptographically ratified socket session & instantiate chat context.'
+    ? 'Welcome back to NexChat. Continue your conversations.'
     : mode === 'register'
-      ? 'Create identity token & configure squircle persona avatar.'
+      ? 'Choose your username, emoji avatar, and security questions.'
       : recoveryStep === 'questions'
-        ? `Confirm the security answers for ${form.email}`
-        : 'Verify security questions to rotate session passkey.';
+        ? `Answer the security questions for ${form.email}`
+        : 'Enter your email to find your security questions.';
 
   return (
     <div className="auth-chamber">
-      {/* Ambient Maroon & Gold Scrims */}
-      <div className="scrim-glow scrim-glow--maroon" />
-      <div className="scrim-glow scrim-glow--gold" />
+      {/* Ambient Dynamic Background Lighting */}
+      <div className="ambient-glow-layer" aria-hidden="true">
+        <div className="ambient-orb ambient-orb--maroon" />
+        <div className="ambient-orb ambient-orb--gold" />
+        <div className="ambient-orb ambient-orb--purple" />
+      </div>
 
-      {/* Editorial Top Technical Bar */}
+      {/* Top Header */}
       <header className="auth-chamber__header">
         <Link to="/" className="terminal-back">
           <span className="terminal-back__arrow">←</span>
-          <span>[00] RETURN TO TRANSMISSION TERMINAL</span>
+          <span>Back to Home</span>
         </Link>
-        <div className="terminal-ratified">
-          <span className="ratified-dot"></span>
-          <span className="ratified-text">
-            ENCLAVE RATIFIED <span className="ratified-dim">//</span> TLS 1.3 <span className="ratified-dim">//</span> SESSION READY
-          </span>
-        </div>
+        <span className="terminal-brand-pill">NexChat</span>
       </header>
 
-      {/* Monolithic Authentication Card */}
+      {/* Main Authentication Card */}
       <div className="auth-surface-wrap">
         <section className="auth-surface">
-          {/* Top Hairline Highlight */}
           <div className="surface-hairline" />
 
           {/* Monogram & Title */}
           <div className="surface-header">
             <div className="surface-monogram">
-              <span className="monogram-lock">🔐</span>
-            </div>
-            <div className="surface-badge">
-              <span>NEXCHAT // SECURE DISPATCH</span>
+              <span className="monogram-lock">💬</span>
             </div>
             <h1 className="surface-title">{title}</h1>
             <p className="surface-subtitle">{subtitle}</p>
           </div>
 
-          {/* Triple Segment Switcher */}
+          {/* Mode Switcher */}
           <div className="auth-segment-grid">
             <button
               type="button"
@@ -289,10 +283,10 @@ const Auth = () => {
             </button>
           </div>
 
-          {/* Fast Dispatch One-Click Demo Bar (Sign In mode) */}
+          {/* Quick Demo Logins (Sign In mode) */}
           {mode === 'login' && (
             <div className="fast-dispatch-row">
-              <span className="fast-dispatch-label">FAST DEMO:</span>
+              <span className="fast-dispatch-label">QUICK DEMO:</span>
               {DEMO_FILLS.map((demo) => (
                 <button
                   key={demo.email}
@@ -311,9 +305,7 @@ const Auth = () => {
             {mode === 'register' && (
               <>
                 <div className="dispatch-field">
-                  <div className="field-label-row">
-                    <label className="field-label">FULL NAME</label>
-                  </div>
+                  <label className="field-label">Full Name</label>
                   <div className="field-input-wrap">
                     <input
                       name="fullname"
@@ -326,10 +318,7 @@ const Auth = () => {
                 </div>
 
                 <div className="dispatch-field">
-                  <div className="field-label-row">
-                    <label className="field-label">USERNAME</label>
-                    <span className="field-tag">UNIQUE HANDLE</span>
-                  </div>
+                  <label className="field-label">Username</label>
                   <div className="field-input-wrap">
                     <span className="field-prefix">@</span>
                     <input
@@ -343,9 +332,7 @@ const Auth = () => {
                 </div>
 
                 <div className="dispatch-field">
-                  <div className="field-label-row">
-                    <label className="field-label">GENDER</label>
-                  </div>
+                  <label className="field-label">Gender</label>
                   <div className="gender-toggle-row">
                     <button
                       type="button"
@@ -365,10 +352,7 @@ const Auth = () => {
                 </div>
 
                 <div className="dispatch-field">
-                  <div className="field-label-row">
-                    <label className="field-label">PERSONA SQUIRCLE AVATAR</label>
-                    <span className="field-tag">UTF-8 LIGHTWEIGHT</span>
-                  </div>
+                  <label className="field-label">Choose Your Avatar</label>
                   <EmojiAvatarPicker
                     selected={form.profilepicture || '🦊'}
                     onSelect={(emoji) => setForm(prev => ({ ...prev, profilepicture: emoji }))}
@@ -380,10 +364,7 @@ const Auth = () => {
 
             {(mode !== 'recovery' || recoveryStep === 'email') && (
               <div className="dispatch-field">
-                <div className="field-label-row">
-                  <label className="field-label">IDENTIFIER // WORK EMAIL (RFC 5322)</label>
-                  <span className="field-tag">TLS-ENCRYPTED</span>
-                </div>
+                <label className="field-label">Email Address</label>
                 <div className="field-input-wrap">
                   <input
                     name="email"
@@ -400,14 +381,14 @@ const Auth = () => {
             {(mode === 'login' || mode === 'register') && (
               <div className="dispatch-field">
                 <div className="field-label-row">
-                  <label className="field-label">MASTER PASSKEY // ZERO-LEAK</label>
+                  <label className="field-label">Password</label>
                   {mode === 'login' && (
                     <button
                       type="button"
                       className="field-link"
                       onClick={() => switchMode('recovery')}
                     >
-                      Forgot Passkey?
+                      Forgot password?
                     </button>
                   )}
                 </div>
@@ -418,7 +399,7 @@ const Auth = () => {
                     placeholder="••••••••••••"
                     value={form.password}
                     onChange={handleChange}
-                    className="field-input font-mono"
+                    className="field-input"
                   />
                   <button
                     type="button"
@@ -434,9 +415,9 @@ const Auth = () => {
 
             {mode === 'register' && (
               <div className="security-recovery-box">
-                <div className="recovery-title">Account Recovery Enclave</div>
+                <div className="recovery-title">Account Recovery Questions</div>
                 <p className="recovery-desc">
-                  Choose 3 security questions. Answers are hashed with bcrypt and only used to reset your passkey.
+                  Choose 3 questions. Answers are securely hashed and used if you ever forget your password.
                 </p>
 
                 {form.securityAnswers.map((entry, index) => (
@@ -471,7 +452,7 @@ const Auth = () => {
                     <label className="field-label">{q.question}</label>
                     <input
                       className="field-input"
-                      placeholder="Your verified answer"
+                      placeholder="Your answer"
                       value={recoveryAnswers[index]?.answer || ''}
                       onChange={(e) => handleRecoveryAnswerChange(index, e.target.value)}
                       autoComplete="off"
@@ -480,11 +461,11 @@ const Auth = () => {
                 ))}
 
                 <div className="dispatch-field">
-                  <label className="field-label">NEW PASSKEY (MIN 6 CHARS)</label>
+                  <label className="field-label">New Password (Min 6 Characters)</label>
                   <input
                     name="password"
                     type="password"
-                    placeholder="New secure passkey"
+                    placeholder="Enter new password"
                     value={form.password}
                     onChange={handleChange}
                     className="field-input"
@@ -504,22 +485,22 @@ const Auth = () => {
               {loading ? (
                 <span className="spinner-auth" />
               ) : mode === 'login' ? (
-                'Authenticate & Enter Workspace →'
+                'Sign In →'
               ) : mode === 'register' ? (
-                'Ratify Identity & Enter Chat →'
+                'Create Account →'
               ) : recoveryStep === 'email' ? (
-                'Locate Security Enclave →'
+                'Find Questions →'
               ) : (
-                'Reset Master Passkey →'
+                'Reset Password →'
               )}
             </button>
           </form>
 
-          {/* Security Footnote */}
+          {/* Footer note */}
           <div className="surface-footer">
             <span className="surface-footer__icon">🛡️</span>
             <p className="surface-footer__text">
-              Protected by edge-routed session encryption &amp; HttpOnly authentication tokens.
+              NexChat protects your privacy with secure cookie sessions and contact requests.
             </p>
           </div>
         </section>

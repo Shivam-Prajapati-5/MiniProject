@@ -11,7 +11,7 @@ const DEMO_USERS = [
     username: 'alex_r',
     email: 'alex@example.com',
     password: 'password123',
-    role: 'Principal Systems Architect',
+    role: 'Systems Architect',
     avatar: '🦊',
     badge: 'Popular',
   },
@@ -29,7 +29,7 @@ const DEMO_USERS = [
     username: 'devon_p',
     email: 'devon@example.com',
     password: 'password123',
-    role: 'Distributed Core',
+    role: 'Backend Engineer',
     avatar: '⚡',
     badge: 'Online',
   },
@@ -38,7 +38,7 @@ const DEMO_USERS = [
     username: 'elena_r',
     email: 'elena@example.com',
     password: 'password123',
-    role: 'Security Architect',
+    role: 'Security Engineer',
     avatar: '🚀',
     badge: 'New Peer',
   },
@@ -65,7 +65,14 @@ const Home = () => {
 
   return (
     <div className="editorial-home">
-      {/* Editorial Navigation Bar */}
+      {/* Ambient Dynamic Background Lighting */}
+      <div className="ambient-glow-layer" aria-hidden="true">
+        <div className="ambient-orb ambient-orb--maroon" />
+        <div className="ambient-orb ambient-orb--gold" />
+        <div className="ambient-orb ambient-orb--purple" />
+      </div>
+
+      {/* Navigation Bar */}
       <header className="editorial-header">
         <div className="editorial-header__inner">
           <Link to="/" className="editorial-brand">
@@ -78,15 +85,14 @@ const Home = () => {
             </div>
             <div className="editorial-brand__text">
               <span className="editorial-brand__title">NexChat</span>
-              <span className="editorial-brand__sub">Protocol v2.4</span>
+              <span className="editorial-brand__sub">Realtime Messenger</span>
             </div>
           </Link>
 
           <nav className="editorial-nav">
-            <a href="#showcase">Terminal</a>
+            <a href="#showcase">Preview</a>
             <a href="#demo-accounts">Demo Peers</a>
-            <a href="#benchmarks">Telemetry</a>
-            <a href="#primitives">Primitives</a>
+            <a href="#features">Features</a>
           </nav>
 
           <div className="editorial-actions">
@@ -107,7 +113,7 @@ const Home = () => {
                   Sign In
                 </Link>
                 <Link to="/auth?mode=register" className="editorial-btn editorial-btn--primary">
-                  <span>Open App</span>
+                  <span>Get Started</span>
                   <span className="editorial-arrow">→</span>
                 </Link>
               </div>
@@ -116,42 +122,26 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Main Editorial Content */}
+      {/* Main Content */}
       <main className="editorial-main">
-        {/* Architectural Hero */}
+        {/* Hero Section */}
         <section className="editorial-hero">
-          {/* Breadcrumb Status Strip */}
-          <div className="editorial-hero__strip">
-            <div className="strip-left">
-              <span className="strip-gold">[01]</span>
-              <span className="strip-light">TRANSMISSION ARCHITECTURE</span>
-              <span className="strip-divider">//</span>
-              <span className="strip-accent">LATENCY: &lt; 50ms</span>
-              <span className="strip-divider">//</span>
-              <span className="strip-status">
-                <span className="status-dot"></span>
-                TLS 1.3 ENCLAVE
-              </span>
-            </div>
-            <div className="strip-right">
-              <span>STORAGE: ZERO RASTER BLOAT</span>
-              <span className="strip-pipe">|</span>
-              <span className="strip-ratified">UTF-8 SQUIRCLE EMOJIS</span>
-            </div>
+          <div className="editorial-hero__tag">
+            <span className="status-dot"></span>
+            <span>Real-time Messaging Platform</span>
           </div>
 
-          {/* Hero Typography */}
           <div className="editorial-hero__grid">
             <div className="hero-left">
               <h1 className="hero-headline">
-                Conversations without latency.
-                <span className="hero-subline">Pure tactical focus.</span>
+                Conversations without lag.
+                <span className="hero-subline">Pure focus and clarity.</span>
               </h1>
             </div>
 
             <div className="hero-right">
               <p className="hero-desc">
-                High-frequency WebSocket relays, zero-leak session cookies, and privacy-first contact handshakes. Engineered for quantitative teams and low-latency workflows.
+                Fast real-time chat with mutual friend requests and lightweight emoji avatars. No broken images, no bloated media, and no spam.
               </p>
 
               <div className="hero-cta-group">
@@ -163,30 +153,20 @@ const Home = () => {
                 ) : (
                   <>
                     <Link to="/auth?mode=register" className="editorial-btn editorial-btn--primary editorial-btn--lg">
-                      <span>Launch Protocol</span>
+                      <span>Create Free Account</span>
                       <span className="editorial-arrow">→</span>
                     </Link>
                     <a href="#demo-accounts" className="editorial-btn editorial-btn--secondary editorial-btn--lg">
-                      <span>1-Click Demo Accounts</span>
+                      <span>Try Demo Logins</span>
                     </a>
                   </>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Micro Hotkey Ribbon */}
-          <div className="editorial-hero__ribbon">
-            <div className="ribbon-item">
-              <span>COMMAND SHORTCUT:</span>
-              <kbd className="editorial-kbd">⌘K</kbd>
-              <span className="ribbon-muted">INSTANT PEER SEARCH</span>
-            </div>
-            <span className="ribbon-right">REAL-TIME SOCKETS // EMERALD PRESENCE</span>
-          </div>
         </section>
 
-        {/* Museum-Grade Product Showcase Terminal */}
+        {/* Product Showcase Window */}
         <section className="editorial-showcase" id="showcase">
           <div className="showcase-window">
             {/* Terminal Header */}
@@ -196,12 +176,10 @@ const Home = () => {
                 <span className="dot dot--gold"></span>
                 <span className="dot dot--emerald"></span>
               </div>
-              <span className="showcase-title">
-                SOCKET // nexchat-node — realtime [atlas-cluster]
-              </span>
-              <div className="showcase-enclave">
+              <span className="showcase-title">NexChat — Live Interface</span>
+              <div className="showcase-status">
                 <span className="status-dot"></span>
-                <span>SECURE DISPATCH</span>
+                <span>Active</span>
               </div>
             </div>
 
@@ -211,7 +189,7 @@ const Home = () => {
               <div className="showcase-sidebar">
                 <div className="showcase-sidebar__top">
                   <span>ACTIVE CONTACTS</span>
-                  <span className="badge-count">3 ACCEPTED</span>
+                  <span className="badge-count">3 MUTUAL</span>
                 </div>
 
                 <div className="showcase-contacts">
@@ -219,33 +197,25 @@ const Home = () => {
                     <div className="avatar-squircle">🦊</div>
                     <div className="contact-info">
                       <span className="contact-name">Alex Rivera</span>
-                      <span className="contact-sub">0.42ms roundtrip...</span>
+                      <span className="contact-sub">The latest update looks great!</span>
                     </div>
-                    <span className="badge-synced">SYNCED</span>
                   </div>
 
                   <div className="showcase-contact">
                     <div className="avatar-squircle">✨</div>
                     <div className="contact-info">
                       <span className="contact-name">Sarah Chen</span>
-                      <span className="contact-sub">Telemetry ratified</span>
+                      <span className="contact-sub">Real-time chat is instant!</span>
                     </div>
-                    <span className="contact-time">14m</span>
                   </div>
 
                   <div className="showcase-contact">
                     <div className="avatar-squircle">⚡</div>
                     <div className="contact-info">
                       <span className="contact-name">Devon Price</span>
-                      <span className="contact-sub">Socket connected</span>
+                      <span className="contact-sub">Sent you a friend request</span>
                     </div>
-                    <span className="contact-time">3m</span>
                   </div>
-                </div>
-
-                <div className="showcase-sidebar__footer">
-                  <span>PRIVACY SHIELD</span>
-                  <span className="strip-gold">ONLY MUTUAL CONTACTS</span>
                 </div>
               </div>
 
@@ -259,11 +229,11 @@ const Home = () => {
                         <span>Alex Rivera</span>
                         <span className="peer-handle">@alex_r</span>
                       </div>
-                      <span className="peer-desc">Principal Systems Architect</span>
+                      <span className="peer-desc">Systems Architect</span>
                     </div>
                   </div>
                   <div className="chat-status-pill">
-                    <span>MUTUAL CONTACT RATIFIED</span>
+                    <span>Direct Message</span>
                   </div>
                 </div>
 
@@ -274,10 +244,10 @@ const Home = () => {
                     <div className="mock-bubble__content">
                       <div className="mock-meta">
                         <span className="mock-author">Alex Rivera</span>
-                        <span className="mock-time">14:02:19 UTC</span>
+                        <span className="mock-time">14:02 UTC</span>
                       </div>
                       <div className="mock-text">
-                        Sarah, live telemetry is looking rock solid across all channels.
+                        Sarah, message delivery is feeling completely instantaneous across all tabs.
                       </div>
                     </div>
                   </div>
@@ -286,11 +256,11 @@ const Home = () => {
                   <div className="mock-bubble mock-bubble--mine">
                     <div className="mock-bubble__content">
                       <div className="mock-meta">
-                        <span className="mock-time">14:02:28 UTC</span>
+                        <span className="mock-time">14:02 UTC</span>
                         <span className="mock-author">Sarah Chen</span>
                       </div>
                       <div className="mock-text">
-                        Agreed! Real-time message transit is instantaneous. The emoji avatars feel exceptionally clean.
+                        Agreed! The emoji avatars look clean and crisp, and only mutual friends can message us.
                       </div>
                       <div className="mock-receipt">
                         <span>✓✓ Delivered</span>
@@ -314,7 +284,7 @@ const Home = () => {
                   <input
                     type="text"
                     disabled
-                    value="Ready to broadcast socket frames across peer nodes."
+                    value="Type a message or press Enter to dispatch..."
                     className="mock-input"
                   />
                   <div className="mock-send-btn">↵</div>
@@ -327,10 +297,10 @@ const Home = () => {
         {/* 1-Click Instant Demo Login Strip */}
         <section className="editorial-demo-strip" id="demo-accounts">
           <div className="demo-strip__header">
-            <span className="strip-gold">[02] ZERO SETUP TESTING</span>
-            <h2 className="demo-strip__title">Instant Demo Node Access</h2>
+            <span className="strip-gold">TEST THE APP INSTANTLY</span>
+            <h2 className="demo-strip__title">One-Click Demo Accounts</h2>
             <p className="demo-strip__desc">
-              Click any verified peer to authenticate immediately with seeded conversations and mutual contacts.
+              Click any demo user below to sign in immediately with pre-configured contacts and conversations.
             </p>
           </div>
 
@@ -370,92 +340,64 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Telemetry Strip */}
-        <section className="editorial-telemetry" id="benchmarks">
-          <div className="telemetry-grid">
-            <div className="telemetry-cell">
-              <div className="telemetry-label">PACKET DELIVERY</div>
-              <div className="telemetry-value">&lt; 50ms</div>
-              <div className="telemetry-desc">Zero external CDN hops, instant Socket.io frames</div>
-            </div>
-
-            <div className="telemetry-cell">
-              <div className="telemetry-label">ASSET OVERHEAD</div>
-              <div className="telemetry-value">0 KB</div>
-              <div className="telemetry-desc">Zero broken images, 100% UTF-8 squircle emoji personas</div>
-            </div>
-
-            <div className="telemetry-cell">
-              <div className="telemetry-label">PRIVACY MODEL</div>
-              <div className="telemetry-value">Mutual</div>
-              <div className="telemetry-desc">Directory hidden; conversations require reciprocal handshake</div>
-            </div>
-          </div>
-        </section>
-
-        {/* Architectural Primitives */}
-        <section className="editorial-primitives" id="primitives">
+        {/* Core Features */}
+        <section className="editorial-primitives" id="features">
           <div className="primitives-header">
-            <span className="strip-gold">[03] SYSTEM PRIMITIVES</span>
-            <h2 className="primitives-title">Engineered for focus and privacy.</h2>
+            <span className="strip-gold">CORE VALUES</span>
+            <h2 className="primitives-title">Designed for focus, speed, and privacy.</h2>
           </div>
 
           <div className="primitives-grid">
             <div className="primitive-card">
               <div className="primitive-card__top">
-                <span className="primitive-tag">FIG. 01 // PRIVACY</span>
+                <span className="primitive-tag">PRIVACY FIRST</span>
                 <span className="primitive-icon">🤝</span>
               </div>
-              <h3 className="primitive-heading">Friend Request Gatekeeper</h3>
+              <h3 className="primitive-heading">Friend Request Protection</h3>
               <p className="primitive-body">
-                No unsolicited direct messages or full directory browsing upon login. Users search by handle, dispatch a handshake request, and only accepted peers populate active channels.
+                No random strangers or unwanted spam. You only see contacts you have explicitly accepted or invited. Search by username and send a request to start a chat.
               </p>
             </div>
 
             <div className="primitive-card">
               <div className="primitive-card__top">
-                <span className="primitive-tag">FIG. 02 // MEDIA</span>
+                <span className="primitive-tag">ZERO BLOAT</span>
                 <span className="primitive-icon">⚡</span>
               </div>
-              <h3 className="primitive-heading">Lightweight Emoji Personas</h3>
+              <h3 className="primitive-heading">Emoji Profile Avatars</h3>
               <p className="primitive-body">
-                Eliminates expensive third-party image hosting limits, CDN outages, and broken avatar links. Stored natively in UTF-8 strings with zero render delay.
+                Lightweight, vibrant squircle emoji avatars stored natively. Eliminates external image hosting limits, bandwidth lag, and broken image URLs.
               </p>
             </div>
 
             <div className="primitive-card">
               <div className="primitive-card__top">
-                <span className="primitive-tag">FIG. 03 // SECURITY</span>
+                <span className="primitive-tag">SECURITY</span>
                 <span className="primitive-icon">🛡️</span>
               </div>
-              <h3 className="primitive-heading">HttpOnly Enclave Sessions</h3>
+              <h3 className="primitive-heading">Secure Cookie Authentication</h3>
               <p className="primitive-body">
-                JWT auth tokens sealed in secure, HttpOnly, SameSite cookies. Immune to XSS credential extraction and cross-site telemetry trackers.
+                Protected by HttpOnly SameSite cookie authentication and account recovery security questions. Keeps your credentials secure without local storage vulnerabilities.
               </p>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Editorial Master Footer */}
+      {/* Footer */}
       <footer className="editorial-footer">
         <div className="editorial-footer__inner">
           <div className="footer-left">
-            <div className="editorial-brand__icon editorial-brand__icon--sm">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2L2 9l10 7 10-7-10-7z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
             <span className="footer-brand">NEXCHAT</span>
             <span className="footer-sep">|</span>
             <span className="footer-status">
               <span className="status-dot"></span>
-              All Socket Relays Operational
+              All Services Operational
             </span>
           </div>
 
           <div className="footer-right">
-            <span>© 2026 NexChat. Built with Node, Express, MongoDB &amp; React.</span>
+            <span>© 2026 NexChat. Built with React, Node &amp; Socket.io.</span>
           </div>
         </div>
       </footer>
