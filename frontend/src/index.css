@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* ── Backgrounds ── */
+  --bg-base:     #0b0f14;
+  --bg-sidebar:  #0f1620;
+  --bg-chat:     #0d1a22;
+  --bg-glass:    rgba(15, 30, 48, 0.55);
+  --bg-input:    rgba(8, 18, 26, 0.85);
+  --bg-hover:    rgba(20, 50, 70, 0.35);
+
+  /* ── Teal scale ── */
+  --teal-dark:   #0d3d4a;
+  --teal-mid:    #0e5c6e;
+  --teal-bright: #17a8c4;
+  --teal-glow:   rgba(23, 168, 196, 0.15);
+
+  /* ── Message bubbles ── */
+  --mint-sender: #8ecfbd;
+  --mint-text:   #0b2a23;
+  --glass-recv:  rgba(20, 45, 65, 0.72);
+
+  /* ── CTAs / online dot ── */
+  --amber:       #e8a048;
+  --amber-hover: #d4893a;
+  --amber-glow:  rgba(232, 160, 72, 0.18);
+
+  /* ── Borders ── */
+  --border-mist:   rgba(180, 210, 220, 0.08);
+  --border-active: rgba(23, 168, 196, 0.28);
+
+  /* ── Text ── */
+  --text-primary:   #e8f0f2;
+  --text-secondary: #7fa3b0;
+  --text-muted:     #3d5c6a;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 2px 8px  rgba(0, 0, 0, 0.50);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.60);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.80);
+
+  /* ── Radius ── */
+  --r-xs:     4px;
+  --r-sm:     6px;
+  --r-md:     10px;
+  --r-lg:     16px;
+  --r-xl:     20px;
+  --r-avatar: 8px;
+  --r-full:   9999px;
+
+  /* ── Motion ── */
+  --ease:            cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --t-fast:          200ms var(--ease);
+  --t-base:          300ms var(--ease);
+  --t-slow:          380ms var(--ease);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--teal-dark); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--teal-mid); }
+
+/* ── Shared glass utility ── */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-mist);
+}
+
+/* ── Keyframes ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(110%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0)    scale(1); }
+  50%       { transform: translateY(-22px) scale(1.05); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+@keyframes popIn {
+  0%   { transform: scale(0.86); opacity: 0; }
+  60%  { transform: scale(1.02); }
+  100% { transform: scale(1);    opacity: 1; }
+}
+@keyframes panelSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}

@@ -1,0 +1,397 @@
+/* ========================================================
+   Auth.css — NexChat login / register screen
+   ======================================================== */
+
+/* ── Backdrop ── */
+.auth-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Ambient glows ── */
+.auth-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+  animation: float 9s ease-in-out infinite;
+}
+.auth-glow-1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(13, 92, 110, 0.38) 0%, transparent 70%);
+  top: -120px;
+  left: -120px;
+  animation-delay: 0s;
+}
+.auth-glow-2 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(23, 168, 196, 0.14) 0%, transparent 70%);
+  bottom: -90px;
+  right: -90px;
+  animation-delay: -4.5s;
+}
+
+/* ── Card ── */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 428px;
+  padding: 44px 40px 40px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-mist);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.04);
+  animation: popIn 380ms var(--ease) both;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal-dark) transparent;
+}
+
+/* ── Logo row ── */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.auth-logo-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--teal-mid), var(--teal-bright));
+  border-radius: var(--r-sm);
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(23, 168, 196, 0.3);
+}
+.auth-logo-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.auth-logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+}
+
+/* ── Heading ── */
+.auth-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.auth-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* ── Form ── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.form-group label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-secondary);
+}
+
+/* ── Input ── */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-icon {
+  position: absolute;
+  left: 13px;
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+  pointer-events: none;
+  flex-shrink: 0;
+  transition: color var(--t-fast);
+}
+.input-wrap input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-mist);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  caret-color: var(--teal-bright);
+}
+.input-wrap input::placeholder {
+  color: var(--text-muted);
+}
+.input-wrap:focus-within .input-icon {
+  color: var(--teal-bright);
+}
+.input-wrap input:focus {
+  border-color: var(--teal-mid);
+  box-shadow: 0 0 0 3px rgba(23, 168, 196, 0.11);
+}
+
+/* ── Gender toggle ── */
+.gender-select {
+  display: flex;
+  gap: 8px;
+}
+.gender-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-mist);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--t-fast);
+}
+.gender-btn:hover {
+  border-color: var(--teal-mid);
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+.gender-btn.active {
+  background: rgba(232, 160, 72, 0.10);
+  border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 0 2px rgba(232, 160, 72, 0.10);
+}
+
+/* ── Forgot password link ── */
+.auth-forgot {
+  align-self: flex-end;
+  margin-top: -6px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--teal-bright);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--t-fast);
+}
+.auth-forgot:hover { color: var(--amber); }
+
+/* ── Security questions ── */
+.security-block {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px;
+  background: rgba(23, 168, 196, 0.04);
+  border: 1px solid var(--border-mist);
+  border-radius: var(--r-sm);
+}
+
+.security-block__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal-bright);
+}
+
+.security-block__hint {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.security-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-select,
+.auth-answer-input {
+  width: 100%;
+  padding: 9px 11px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-mist);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 12.5px;
+  outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.auth-select {
+  cursor: pointer;
+  color: var(--text-secondary);
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 30px;
+}
+
+.auth-answer-input::placeholder { color: var(--text-muted); }
+
+.auth-select:focus,
+.auth-answer-input:focus {
+  border-color: var(--teal-mid);
+  box-shadow: 0 0 0 3px rgba(23, 168, 196, 0.11);
+}
+
+.auth-select option {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+/* ── Error banner ── */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px;
+  background: rgba(232, 160, 72, 0.07);
+  border: 1px solid rgba(232, 160, 72, 0.22);
+  border-radius: var(--r-sm);
+  color: var(--amber);
+  font-size: 13px;
+  font-weight: 400;
+  animation: fadeIn 200ms var(--ease);
+  line-height: 1.4;
+}
+.auth-error svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ── Submit button ── */
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--amber);
+  border: none;
+  border-radius: var(--r-sm);
+  color: var(--mint-text);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 4px;
+  letter-spacing: 0.01em;
+}
+.auth-btn:hover:not(:disabled) {
+  background: var(--amber-hover);
+  box-shadow: 0 4px 18px var(--amber-glow);
+  transform: translateY(-1px);
+}
+.auth-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.auth-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ── */
+.spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(11, 42, 35, 0.25);
+  border-top-color: var(--mint-text);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Switch link ── */
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 22px;
+}
+.auth-switch button {
+  background: none;
+  border: none;
+  color: var(--teal-bright);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color var(--t-fast);
+}
+.auth-switch button:hover {
+  color: var(--amber);
+}
+
+.auth-switch--secondary {
+  margin-top: 10px;
+}
+
+.auth-switch--secondary button {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 100%;
+    min-height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    padding: 32px 22px;
+    border-left: none;
+    border-right: none;
+  }
+}
