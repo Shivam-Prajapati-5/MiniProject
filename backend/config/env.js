@@ -12,12 +12,18 @@ const parseOrigins = (value) => {
         .filter(Boolean);
 };
 
+const cleanString = (value) => {
+    return String(value || "")
+        .trim()
+        .replace(/^["']|["']$/g, "");
+};
+
 export const env = Object.freeze({
     nodeEnv: process.env.NODE_ENV || "development",
     isProduction: process.env.NODE_ENV === "production",
     port: parsePort(process.env.PORT),
-    mongoUri: process.env.MONGO_URI,
-    jwtSecret: process.env.JWT_SECRET,
+    mongoUri: cleanString(process.env.MONGO_URI),
+    jwtSecret: cleanString(process.env.JWT_SECRET),
     clientOrigins: parseOrigins(process.env.CLIENT_ORIGIN)
 });
 
