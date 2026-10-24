@@ -42,7 +42,12 @@ if (!env.isProduction) {
 app.use(helmet({ contentSecurityPolicy }));
 
 app.use(cors({
-    origin: env.clientOrigins,
+    origin: (origin, callback) => {
+        if (!origin || env.clientOrigins.includes(origin) || origin.endsWith(".vercel.app") || !env.isProduction) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true
 }));
 
