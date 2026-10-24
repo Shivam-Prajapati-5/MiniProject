@@ -243,6 +243,17 @@ export const ChatProvider = ({ children }) => {
     const socket = io(SOCKET_URL, {
       withCredentials: true,
       path: '/socket.io',
+      // The API is reached through the Vercel same-origin proxy, so the
+      // HttpOnly cookie is not available on the Render socket origin.
+      // Mint a short-lived handshake token for every (re)connect instead.
+      auth: (callback) => {
+        api.get('/auth/socket-token')
+          .then(({ data }) => callback({ token: data.token }))
+          .catch((err) => {
+            console.error('Socket token request failed:', err)
+            callback({})
+          })
+      },
     })
     socketRef.current = socket
 

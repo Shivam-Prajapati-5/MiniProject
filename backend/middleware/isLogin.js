@@ -16,6 +16,12 @@ const isLogin = async (req, res, next) => {
 
         const decoded = jwt.verify(token, env.jwtSecret);
 
+        // Socket handshake tokens are deliberately short-lived and must not
+        // be usable as a browser session cookie.
+        if (decoded.scope === "socket") {
+            throw new Error("Socket token cannot be used as a session");
+        }
+
         const user = await User.findById(decoded.userId).select("+tokenVersion");
 
         if (!user) {

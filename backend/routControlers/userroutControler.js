@@ -1,6 +1,9 @@
 import User from "../Modes/useModels.js";
 import bcryptjs from "bcryptjs";
-import jwtToken from "../utils/jwtwebToken.js";
+import jwtToken, {
+    createSocketToken,
+    SOCKET_TOKEN_TTL_SECONDS
+} from "../utils/jwtwebToken.js";
 import {
     AUTH_COOKIE_NAME,
     clearAuthCookieOptions
@@ -214,6 +217,21 @@ export const getCurrentUser = async (req, res) => {
             createdAt: user.createdAt,
             updatedAt: user.updatedAt
         }
+    });
+};
+
+
+// ================= SOCKET HANDSHAKE TOKEN =================
+// Used when the frontend and API are on different origins (Render + Vercel).
+// The HTTP session stays in the HttpOnly cookie; this short-lived token is
+// sent in the Socket.IO handshake auth payload instead of a cross-site cookie.
+export const getSocketToken = (req, res) => {
+    res.set("Cache-Control", "no-store");
+
+    return res.status(200).json({
+        success: true,
+        token: createSocketToken(req.user._id, req.user.tokenVersion ?? 0),
+        expiresIn: SOCKET_TOKEN_TTL_SECONDS
     });
 };
 

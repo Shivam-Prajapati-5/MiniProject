@@ -5,6 +5,7 @@ import {
     userLogout,
     getUsers,
     getCurrentUser,
+    getSocketToken,
     getRecoveryQuestionCatalog,
     getRecoveryQuestions,
     resetPasswordWithSecurityAnswers
@@ -30,6 +31,8 @@ router.post("/recovery/questions", recoveryLimiter, getRecoveryQuestions);
 router.post("/recovery/reset", recoveryLimiter, resetPasswordWithSecurityAnswers);
 
 router.get("/me", isLogin, getCurrentUser);
+
+router.get("/socket-token", isLogin, getSocketToken);
 
 router.get("/users", isLogin, getUsers);
 

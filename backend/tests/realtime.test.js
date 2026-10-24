@@ -95,6 +95,20 @@ const connectSocket = async (cookie) => {
     return client;
 };
 
+const connectSocketWithToken = async (token) => {
+    const client = createClient(socketUrl, {
+        transports: ["websocket"],
+        forceNew: true,
+        reconnection: false,
+        auth: { token }
+    });
+
+    openClients.add(client);
+    client.once("disconnect", () => openClients.delete(client));
+
+    return client;
+};
+
 const waitForPresence = (client, userId, online, timeoutMs = 5000) => {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
@@ -222,6 +236,35 @@ describe("Realtime API", () => {
 
         senderSocket.close();
         receiverSocket.close();
+    });
+
+    test("authenticates with a short-lived socket token and rejects it after a reset", async () => {
+        const user = await registerUser();
+        const tokenResponse = await user.agent.get("/api/auth/socket-token");
+
+        assert.equal(tokenResponse.status, 200, JSON.stringify(tokenResponse.body));
+        assert.equal(typeof tokenResponse.body.token, "string");
+
+        const socketToken = tokenResponse.body.token;
+        const socket = await connectSocketWithToken(socketToken);
+        await waitForEvent(socket, "connect");
+        socket.close();
+
+        const reset = await request(app)
+            .post("/api/auth/recovery/reset")
+            .send({
+                email: user.data.email,
+                newPassword: "new-secret-123",
+                securityAnswers: user.data.securityAnswers
+            });
+
+        assert.equal(reset.status, 200, JSON.stringify(reset.body));
+
+        const staleSocket = await connectSocketWithToken(socketToken);
+        const [staleError] = await waitForEvent(staleSocket, "connect_error");
+
+        assert.match(staleError.message, /authentication required/i);
+        staleSocket.close();
     });
 
     test("broadcasts presence changes to connected users", async () => {

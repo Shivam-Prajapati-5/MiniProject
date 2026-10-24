@@ -3,6 +3,23 @@ import { env } from "../config/env.js";
 
 const skipRateLimit = () => env.nodeEnv === "test";
 
+// Vercel adds the browser IP to X-Forwarded-For before proxying to Render.
+// Using the first entry keeps users in separate buckets when the API is
+// reached through the Vercel proxy.
+const clientKey = (req) => {
+    const forwardedFor = req.headers["x-forwarded-for"];
+
+    if (typeof forwardedFor === "string") {
+        const first = forwardedFor.split(",")[0].trim();
+
+        if (first) {
+            return first;
+        }
+    }
+
+    return req.ip;
+};
+
 const rateLimitHandler = (req, res) => {
     return res.status(429).json({
         success: false,
@@ -16,6 +33,8 @@ export const authLimiter = rateLimit({
     standardHeaders: "draft-8",
     legacyHeaders: false,
     skip: skipRateLimit,
+    keyGenerator: clientKey,
+    validate: { keyGeneratorIpFallback: false },
     handler: rateLimitHandler
 });
 
@@ -25,6 +44,8 @@ export const recoveryLimiter = rateLimit({
     standardHeaders: "draft-8",
     legacyHeaders: false,
     skip: skipRateLimit,
+    keyGenerator: clientKey,
+    validate: { keyGeneratorIpFallback: false },
     handler: rateLimitHandler
 });
 
@@ -34,5 +55,7 @@ export const messageSendLimiter = rateLimit({
     standardHeaders: "draft-8",
     legacyHeaders: false,
     skip: skipRateLimit,
+    keyGenerator: clientKey,
+    validate: { keyGeneratorIpFallback: false },
     handler: rateLimitHandler
 });

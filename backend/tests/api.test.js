@@ -127,6 +127,28 @@ describe("Auth API", () => {
         assert.equal(me.body.user.email, data.email);
     });
 
+    test("issues a short-lived socket token only for authenticated users", async () => {
+        const unauthenticated = await request(app).get("/api/auth/socket-token");
+        assert.equal(unauthenticated.status, 401);
+
+        const user = await createUser();
+        const response = await user.agent.get("/api/auth/socket-token");
+
+        assert.equal(response.status, 200, JSON.stringify(response.body));
+        assert.equal(response.body.success, true);
+        assert.equal(typeof response.body.token, "string");
+        assert.ok(response.body.token.length > 20);
+        assert.equal(response.body.expiresIn, 300);
+        assert.equal(response.headers["cache-control"], "no-store");
+
+        // A handshake token must not double as a browser session cookie.
+        const asCookie = await request(app)
+            .get("/api/auth/me")
+            .set("Cookie", `jwt=${response.body.token}`);
+
+        assert.equal(asCookie.status, 401);
+    });
+
     test("rejects duplicate usernames and emails", async () => {
         const existing = await createUser();
 

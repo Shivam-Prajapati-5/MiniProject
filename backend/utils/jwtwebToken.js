@@ -6,6 +6,23 @@ import {
     authCookieOptions
 } from "./authCookie.js";
 
+export const SOCKET_TOKEN_TTL_SECONDS = 5 * 60;
+export const SOCKET_TOKEN_SCOPE = "socket";
+
+export const createSocketToken = (userId, tokenVersion = 0) => {
+    return jwt.sign(
+        {
+            userId,
+            tokenVersion,
+            scope: SOCKET_TOKEN_SCOPE
+        },
+        env.jwtSecret,
+        {
+            expiresIn: SOCKET_TOKEN_TTL_SECONDS
+        }
+    );
+};
+
 const jwtToken = (userId, res, tokenVersion = 0) => {
     const token = jwt.sign(
         { userId, tokenVersion },

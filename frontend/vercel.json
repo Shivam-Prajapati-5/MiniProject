@@ -1,12 +1,19 @@
 {
-  "rewrites": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://YOUR_BACKEND_URL.onrender.com/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "${BACKEND_URL}/api/$1",
+      "headers": {
+        "Cache-Control": "no-store"
+      }
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

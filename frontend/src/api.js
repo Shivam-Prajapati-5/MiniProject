@@ -8,9 +8,11 @@ const derivedSocketUrl = normalizedBaseUrl.endsWith('/api')
   : normalizedBaseUrl;
 
 export const API_BASE_URL = normalizedBaseUrl;
-export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL
+export const SOCKET_URL = (
+  import.meta.env.VITE_SOCKET_URL
   || derivedSocketUrl
-  || window.location.origin;
+  || window.location.origin
+).replace(/\/+$/, '');
 
 const api = axios.create({
   baseURL: normalizedBaseUrl,

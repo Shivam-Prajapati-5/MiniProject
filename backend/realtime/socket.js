@@ -37,6 +37,34 @@ const parseCookies = (header = "") => {
     return cookies;
 };
 
+const getHandshakeTokens = (socket) => {
+    const tokens = [];
+    const authToken = socket.handshake.auth?.token;
+    const cookieToken = parseCookies(socket.handshake.headers.cookie)[AUTH_COOKIE_NAME];
+
+    if (typeof authToken === "string" && authToken) {
+        tokens.push(authToken);
+    }
+
+    if (cookieToken) {
+        tokens.push(cookieToken);
+    }
+
+    return tokens;
+};
+
+const verifyHandshakeToken = (socket) => {
+    for (const token of getHandshakeTokens(socket)) {
+        try {
+            return jwt.verify(token, env.jwtSecret);
+        } catch {
+            // Try the next available credential.
+        }
+    }
+
+    return null;
+};
+
 const onlineConnectionCounts = new Map();
 
 const emitPresence = (io, userId, online) => {
@@ -58,14 +86,12 @@ export const createSocketServer = (httpServer) => {
 
     io.use(async (socket, next) => {
         try {
-            const cookies = parseCookies(socket.handshake.headers.cookie);
-            const token = cookies[AUTH_COOKIE_NAME];
+            const decoded = verifyHandshakeToken(socket);
 
-            if (!token) {
+            if (!decoded) {
                 return next(new Error("Authentication required"));
             }
 
-            const decoded = jwt.verify(token, env.jwtSecret);
             const user = await User.findById(decoded.userId)
                 .select("fullname username profilepicture +tokenVersion")
                 .lean();
