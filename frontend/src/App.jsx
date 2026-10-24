@@ -1,7 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './context/AuthContext'
-import Auth from './pages/Auth'
-import Chat from './pages/Chat'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import Chat from './pages/Chat';
 
 const SessionLoader = () => (
   <div className="auth-bg">
@@ -19,27 +20,28 @@ const SessionLoader = () => (
       }
     `}</style>
   </div>
-)
+);
 
 const ProtectedRoute = ({ children }) => {
-  const { authUser, initializing } = useAuth()
+  const { authUser, initializing } = useAuth();
 
-  if (initializing) return <SessionLoader />
-  return authUser ? children : <Navigate to="/auth" replace />
-}
+  if (initializing) return <SessionLoader />;
+  return authUser ? children : <Navigate to="/auth" replace />;
+};
 
 const PublicRoute = ({ children }) => {
-  const { authUser, initializing } = useAuth()
+  const { authUser, initializing } = useAuth();
 
-  if (initializing) return <SessionLoader />
-  return !authUser ? children : <Navigate to="/" replace />
-}
+  if (initializing) return <SessionLoader />;
+  return !authUser ? children : <Navigate to="/chat" replace />;
+};
 
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route
-        path="/"
+        path="/chat"
         element={
           <ProtectedRoute>
             <Chat />
@@ -56,7 +58,7 @@ function App() {
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

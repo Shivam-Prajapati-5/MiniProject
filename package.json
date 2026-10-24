@@ -9,7 +9,8 @@
     "dev": "nodemon backend/index.js",
     "dev:frontend": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend install && npm --prefix frontend run build",
-    "test": "node --test \"backend/tests/**/*.test.js\""
+    "test": "node --test \"backend/tests/**/*.test.js\"",
+    "seed": "node backend/utils/seedDemoUsers.js"
   },
   "keywords": [],
   "author": "",

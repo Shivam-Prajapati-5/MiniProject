@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import './Auth.css';
@@ -28,9 +29,20 @@ const emptyForm = () => ({
 });
 
 const Auth = () => {
+  const [searchParams] = useSearchParams();
+  const queryMode = searchParams.get('mode');
+  const initialMode = queryMode === 'register' ? 'register' : queryMode === 'recovery' ? 'recovery' : 'login';
+
   const { login, register, resetPassword, loading } = useAuth();
-  const [mode, setMode] = useState('login'); // login | register | recovery
+  const [mode, setMode] = useState(initialMode); // login | register | recovery
   const [recoveryStep, setRecoveryStep] = useState('email'); // email | questions
+
+  useEffect(() => {
+    const m = searchParams.get('mode');
+    if (m === 'register' || m === 'login' || m === 'recovery') {
+      setMode(m);
+    }
+  }, [searchParams]);
   const [catalog, setCatalog] = useState(FALLBACK_QUESTIONS);
   const [recoveryQuestions, setRecoveryQuestions] = useState([]);
   const [recoveryAnswers, setRecoveryAnswers] = useState([]);
@@ -203,6 +215,31 @@ const Auth = () => {
     <div className="auth-bg">
       <div className="auth-glow auth-glow-1" />
       <div className="auth-glow auth-glow-2" />
+
+      <Link
+        to="/"
+        style={{
+          position: 'absolute',
+          top: '24px',
+          left: '24px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          color: '#94a3b8',
+          textDecoration: 'none',
+          fontSize: '0.9rem',
+          fontWeight: 500,
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: '8px 16px',
+          borderRadius: '999px',
+          backdropFilter: 'blur(10px)',
+          zIndex: 10,
+          transition: 'all 0.2s',
+        }}
+      >
+        ← Back to Homepage
+      </Link>
 
       <div className="auth-card">
         {/* Logo */}
