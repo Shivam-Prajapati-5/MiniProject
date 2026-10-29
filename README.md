@@ -1,4 +1,4 @@
-# NexChat
+# NextChat
 
 A full-stack, one-to-one chat application built with React, Express, MongoDB, and Socket.IO. Auth uses an `HttpOnly` JWT cookie. Accounts can be recovered with three personal security questions instead of email/SMTP.
 
@@ -77,8 +77,8 @@ If you prefer separate frontend hosting, build with `VITE_API_URL=https://api.ex
 The included multi-stage `Dockerfile` builds the frontend and runs the Express server:
 
 ```bash
-docker build -t nexchat .
-docker run --rm -p 3000:3000 --env-file .env -e NODE_ENV=production nexchat
+docker build -t nextchat .
+docker run --rm -p 3000:3000 --env-file .env -e NODE_ENV=production nextchat
 ```
 
 The image does not include `.env`, so pass secrets at runtime. Use a `JWT_SECRET` of at least 32 characters and set `CLIENT_ORIGIN` to the deployed HTTPS origin.
