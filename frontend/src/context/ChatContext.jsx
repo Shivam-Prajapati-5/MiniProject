@@ -299,6 +299,7 @@ export const ChatProvider = ({ children }) => {
     const socket = io(SOCKET_URL, {
       withCredentials: true,
       path: '/socket.io',
+      autoConnect: false,
       // The API is reached through the Vercel same-origin proxy, so the
       // HttpOnly cookie is not available on the Render socket origin.
       // Mint a short-lived handshake token for every (re)connect instead.
@@ -309,8 +310,6 @@ export const ChatProvider = ({ children }) => {
           .then(({ data }) => callback({ token: data.token }))
           .catch((err) => {
             console.error('Socket token request failed:', err)
-            // Do NOT call callback({}) — that connects with no credentials
-            // and the server will reject it. Instead, abort the connect attempt.
             callback({ token: '' })
           })
       },
@@ -448,6 +447,10 @@ export const ChatProvider = ({ children }) => {
     socket.on('typing:update', handleTyping)
     socket.on('friend:request_received', handleFriendRequestReceived)
     socket.on('friend:request_accepted', handleFriendRequestAccepted)
+
+    // Connect AFTER all listeners are registered so no events are missed,
+    // especially 'presence:state' which fires immediately on connection.
+    socket.connect()
 
     return () => {
       for (const timer of typingTimersRef.current.values()) clearTimeout(timer)
