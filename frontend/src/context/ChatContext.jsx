@@ -302,12 +302,16 @@ export const ChatProvider = ({ children }) => {
       // The API is reached through the Vercel same-origin proxy, so the
       // HttpOnly cookie is not available on the Render socket origin.
       // Mint a short-lived handshake token for every (re)connect instead.
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
       auth: (callback) => {
         api.get('/auth/socket-token')
           .then(({ data }) => callback({ token: data.token }))
           .catch((err) => {
             console.error('Socket token request failed:', err)
-            callback({})
+            // Do NOT call callback({}) — that connects with no credentials
+            // and the server will reject it. Instead, abort the connect attempt.
+            callback({ token: '' })
           })
       },
     })
