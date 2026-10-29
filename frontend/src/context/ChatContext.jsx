@@ -331,10 +331,22 @@ export const ChatProvider = ({ children }) => {
     const handleConnect = () => {
       setConnected(true)
       loadConversations()
+
+      // On every (re)connect, re-fetch messages for the currently open
+      // conversation so any messages missed during a disconnect are shown
+      // without needing a full page refresh.
+      const conversationId = selectedConversationRef.current
+      if (conversationId) {
+        fetchMessages(conversationId)
+      }
     }
 
     const handleDisconnect = () => {
       setConnected(false)
+      // Clear online status immediately — we have no reliable state
+      // while disconnected. The server sends a fresh presence:state
+      // on every reconnect which repopulates this correctly.
+      setOnlineUserIds(new Set())
     }
 
     const handleConnectError = (err) => {
@@ -471,6 +483,7 @@ export const ChatProvider = ({ children }) => {
   }, [
     currentUserId,
     loadConversations,
+    fetchMessages,
     setConversationMapping,
   ])
 
