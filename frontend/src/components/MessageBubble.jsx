@@ -40,23 +40,23 @@ const MessageBubble = ({ msg }) => {
           line-height: 1.5;
         }
 
-        /* Sender — Deep Maroon */
+        /* Sender — Vibrant Electric Blue */
         .bubble--mine {
-          background: #4A1525;
-          color: #F5F2ED;
-          border: 1px solid rgba(198, 161, 91, 0.4);
-          border-radius: 8px 8px 2px 8px;
-          box-shadow: 0 4px 14px rgba(74, 21, 37, 0.4);
+          background: linear-gradient(135deg, #1d68f6 0%, #2563eb 100%);
+          color: #FFFFFF;
+          border: 1px solid rgba(147, 197, 253, 0.32);
+          border-radius: 14px 14px 4px 14px;
+          box-shadow: 0 6px 18px rgba(29, 104, 246, 0.35);
         }
-        /* Receiver — Charcoal Glass */
+        /* Receiver — Frosted Midnight Glass */
         .bubble--theirs {
-          background: #1E1D20;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(198, 161, 91, 0.18);
-          color: #F5F2ED;
-          border-radius: 8px 8px 8px 2px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+          background: rgba(13, 27, 56, 0.75);
+          backdrop-filter: blur(16px) saturate(180%);
+          -webkit-backdrop-filter: blur(16px) saturate(180%);
+          border: 1px solid rgba(59, 130, 246, 0.20);
+          color: #F8FAFC;
+          border-radius: 14px 14px 14px 4px;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }
 
         .bubble__text {
@@ -72,8 +72,8 @@ const MessageBubble = ({ msg }) => {
           align-self: flex-end;
           margin-top: 2px;
         }
-        .bubble--mine   .bubble__time { color: #E0C58A; opacity: 0.85; }
-        .bubble--theirs .bubble__time { color: #77777D; opacity: 0.85; }
+        .bubble--mine   .bubble__time { color: rgba(255, 255, 255, 0.8); }
+        .bubble--theirs .bubble__time { color: #94A3B8; }
       `}</style>
     </div>
   )

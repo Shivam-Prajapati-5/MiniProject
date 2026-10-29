@@ -107,24 +107,26 @@ const MessageInput = () => {
 
       <style>{`
         .msg-input-bar {
-          padding: 12px 18px 16px;
-          border-top: 1px solid rgba(198, 161, 91, 0.20);
-          background: #141315;
+          padding: 12px 20px 18px;
+          border-top: 1px solid rgba(59, 130, 246, 0.16);
+          background: rgba(6, 16, 38, 0.78);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           flex-shrink: 0;
         }
         .msg-input-wrap {
           display: flex;
           align-items: flex-end;
           gap: 10px;
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.22);
-          border-radius: 6px;
+          background: rgba(8, 20, 46, 0.85);
+          border: 1px solid rgba(59, 130, 246, 0.22);
+          border-radius: 12px;
           padding: 8px 10px 8px 14px;
           transition: border-color var(--t-fast), box-shadow var(--t-fast);
         }
         .msg-input-wrap:focus-within {
-          border-color: #E0C58A;
-          box-shadow: 0 0 0 1px #E0C58A;
+          border-color: #2563EB;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
         }
         .msg-input__textarea {
           flex: 1;
@@ -140,16 +142,16 @@ const MessageInput = () => {
           min-height: 22px;
           max-height: 120px;
           overflow-y: auto;
-          caret-color: #E0C58A;
+          caret-color: #38BDF8;
         }
-        .msg-input__textarea::placeholder { color: var(--text-muted); }
+        .msg-input__textarea::placeholder { color: #64748B; }
         .msg-input__send {
-          width: 34px;
-          height: 34px;
-          border-radius: 4px;
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          background: #232126;
-          color: var(--text-muted);
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          background: rgba(14, 30, 64, 0.6);
+          color: #64748B;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -157,25 +159,25 @@ const MessageInput = () => {
           flex-shrink: 0;
           transition: all var(--t-fast);
         }
-        .msg-input__send svg { width: 15px; height: 15px; }
+        .msg-input__send svg { width: 16px; height: 16px; }
         .msg-input__send--active {
-          background: #4A1525;
-          border-color: rgba(198, 161, 91, 0.45);
-          color: #E0C58A;
-          box-shadow: 0 2px 8px rgba(74, 21, 37, 0.4);
+          background: linear-gradient(135deg, #1D68F6 0%, #2563EB 100%);
+          border-color: rgba(147, 197, 253, 0.4);
+          color: #FFFFFF;
+          box-shadow: 0 4px 14px rgba(29, 104, 246, 0.45);
         }
         .msg-input__send--active:hover {
-          background: #702A3C;
-          border-color: #E0C58A;
+          background: linear-gradient(135deg, #195ce0 0%, #1d4ed8 100%);
           transform: translateY(-1px);
+          box-shadow: 0 6px 18px rgba(29, 104, 246, 0.6);
         }
         .msg-input__send:disabled { cursor: not-allowed; }
         .msg-send-spinner {
           display: inline-block;
           width: 14px;
           height: 14px;
-          border: 2px solid rgba(224, 197, 138, 0.3);
-          border-top-color: #E0C58A;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: #FFFFFF;
           border-radius: 50%;
           animation: spin 0.7s linear infinite;
         }

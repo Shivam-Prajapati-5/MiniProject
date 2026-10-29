@@ -167,11 +167,11 @@ const ProfilePanel = ({ onClose }) => {
           width: 420px;
           max-width: 92vw;
           z-index: 201;
-          background: rgba(20, 19, 23, 0.86);
-          backdrop-filter: blur(28px) saturate(180%);
-          -webkit-backdrop-filter: blur(28px) saturate(180%);
-          border-left: 1px solid rgba(198, 161, 91, 0.25);
-          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.75), inset 1px 0 0 rgba(255, 255, 255, 0.08);
+          background: rgba(5, 14, 34, 0.88);
+          backdrop-filter: blur(28px) saturate(190%);
+          -webkit-backdrop-filter: blur(28px) saturate(190%);
+          border-left: 1px solid rgba(59, 130, 246, 0.22);
+          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.8), inset 1px 0 0 rgba(255, 255, 255, 0.08);
           display: flex;
           flex-direction: column;
           animation: slideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -183,13 +183,13 @@ const ProfilePanel = ({ onClose }) => {
           left: 0;
           right: 0;
           height: 2px;
-          background: linear-gradient(90deg, transparent, #E0C58A, transparent);
+          background: linear-gradient(90deg, transparent, #38BDF8, transparent);
         }
 
         .drawer-header {
           padding: 20px 24px;
-          border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: rgba(24, 23, 28, 0.85);
+          border-bottom: 1px solid rgba(59, 130, 246, 0.16);
+          background: rgba(7, 18, 42, 0.85);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
           display: flex;
@@ -198,25 +198,24 @@ const ProfilePanel = ({ onClose }) => {
         }
 
         .drawer-title {
-          font-family: var(--font-serif);
           font-size: 1.35rem;
-          font-weight: 500;
-          color: #F5F2ED;
+          font-weight: 700;
+          color: #F8FAFC;
         }
 
         .drawer-subtitle {
           font-size: 11.5px;
-          color: #77777D;
+          color: #94A3B8;
           margin-top: 3px;
         }
 
         .drawer-close-btn {
-          width: 28px;
-          height: 28px;
-          border-radius: 4px;
-          background: rgba(32, 31, 33, 0.8);
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          color: #A39E9B;
+          width: 30px;
+          height: 30px;
+          border-radius: 8px;
+          background: rgba(14, 30, 64, 0.8);
+          border: 1px solid rgba(59, 130, 246, 0.25);
+          color: #94A3B8;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -225,9 +224,9 @@ const ProfilePanel = ({ onClose }) => {
           transition: all 0.15s;
         }
         .drawer-close-btn:hover {
-          color: #F5F2ED;
-          background: #4A1525;
-          border-color: #E0C58A;
+          color: #FFFFFF;
+          background: #1D68F6;
+          border-color: #60A5FA;
         }
 
         .drawer-body {
@@ -241,13 +240,13 @@ const ProfilePanel = ({ onClose }) => {
         }
 
         .drawer-card {
-          background: rgba(28, 26, 32, 0.65);
+          background: rgba(8, 20, 46, 0.65);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          border-radius: 8px;
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          border-radius: 12px;
           padding: 20px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .drawer-card--center {
@@ -270,11 +269,11 @@ const ProfilePanel = ({ onClose }) => {
         .profile-name {
           font-size: 1.15rem;
           font-weight: 600;
-          color: #F5F2ED;
+          color: #F8FAFC;
         }
 
         .profile-verified {
-          color: #E0C58A;
+          color: #38BDF8;
           font-size: 13px;
         }
 
@@ -282,14 +281,14 @@ const ProfilePanel = ({ onClose }) => {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: #100F12;
-          border: 1px solid rgba(198, 161, 91, 0.2);
+          background: rgba(14, 30, 64, 0.8);
+          border: 1px solid rgba(59, 130, 246, 0.25);
           padding: 3px 10px;
           border-radius: 999px;
           margin: 8px 0;
           font-family: var(--font-mono);
           font-size: 10px;
-          color: #E0C58A;
+          color: #38BDF8;
         }
 
         .socket-dot {
@@ -305,20 +304,21 @@ const ProfilePanel = ({ onClose }) => {
           gap: 8px;
           font-family: var(--font-mono);
           font-size: 11px;
-          color: #77777D;
+          color: #94A3B8;
         }
 
         .handle-copy-btn {
-          background: #201F21;
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          color: #E0C58A;
+          background: rgba(29, 104, 246, 0.2);
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          color: #60A5FA;
           font-size: 9px;
           text-transform: uppercase;
-          padding: 2px 6px;
-          border-radius: 3px;
+          padding: 3px 8px;
+          border-radius: 4px;
           cursor: pointer;
+          transition: all 0.15s;
         }
-        .handle-copy-btn:hover { background: #4A1525; color: #FFF; }
+        .handle-copy-btn:hover { background: #1D68F6; color: #FFF; }
 
         .drawer-section {
           display: flex;
@@ -333,53 +333,53 @@ const ProfilePanel = ({ onClose }) => {
         }
 
         .section-label {
-          font-family: var(--font-cinzel);
-          font-size: 9.5px;
-          letter-spacing: 0.16em;
-          color: #C6A15B;
-          font-weight: 600;
+          font-size: 10px;
+          letter-spacing: 0.14em;
+          color: #60A5FA;
+          font-weight: 700;
+          text-transform: uppercase;
           display: block;
         }
 
         .section-sub {
           font-size: 11px;
-          color: #77777D;
+          color: #94A3B8;
         }
 
         .picker-toggle-btn {
-          background: #4A1525;
-          border: 1px solid rgba(198, 161, 91, 0.35);
-          color: #E0C58A;
+          background: #1D68F6;
+          border: 1px solid rgba(147, 197, 253, 0.35);
+          color: #FFFFFF;
           font-size: 11px;
           font-weight: 600;
-          padding: 5px 10px;
-          border-radius: 4px;
+          padding: 6px 12px;
+          border-radius: 6px;
           cursor: pointer;
           transition: all 0.18s;
+          box-shadow: 0 4px 12px rgba(29, 104, 246, 0.35);
         }
         .picker-toggle-btn:hover {
-          background: #702A3C;
-          border-color: #E0C58A;
+          background: #195ce0;
           color: #FFF;
         }
 
         .picker-dropdown {
-          background: rgba(26, 24, 30, 0.75);
+          background: rgba(8, 20, 46, 0.85);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(198, 161, 91, 0.25);
-          border-radius: 8px;
+          border: 1px solid rgba(59, 130, 246, 0.25);
+          border-radius: 10px;
           padding: 14px;
           animation: fadeIn 0.2s ease;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .meta-card {
-          background: rgba(26, 24, 30, 0.65);
+          background: rgba(8, 20, 46, 0.65);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(198, 161, 91, 0.2);
-          border-radius: 8px;
+          border: 1px solid rgba(59, 130, 246, 0.2);
+          border-radius: 10px;
           overflow: hidden;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
@@ -390,56 +390,56 @@ const ProfilePanel = ({ onClose }) => {
           align-items: center;
           justify-content: space-between;
           font-size: 12px;
-          border-bottom: 1px solid rgba(198, 161, 91, 0.12);
+          border-bottom: 1px solid rgba(59, 130, 246, 0.12);
         }
         .meta-row:last-child { border-bottom: none; }
 
-        .meta-label { color: #A39E9B; font-weight: 500; }
-        .meta-val { color: #F5F2ED; font-weight: 600; }
+        .meta-label { color: #94A3B8; font-weight: 500; }
+        .meta-val { color: #F8FAFC; font-weight: 600; }
         .meta-tag {
           font-family: var(--font-mono);
           font-size: 9.5px;
           font-weight: 600;
-          color: #E0C58A;
-          background: rgba(198, 161, 91, 0.14);
-          border: 1px solid rgba(198, 161, 91, 0.25);
+          color: #38BDF8;
+          background: rgba(29, 104, 246, 0.18);
+          border: 1px solid rgba(59, 130, 246, 0.3);
           padding: 2px 8px;
           border-radius: 999px;
         }
 
         .drawer-logout-btn {
           width: 100%;
-          background: rgba(74, 21, 37, 0.35);
+          background: rgba(239, 68, 68, 0.15);
           backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 180, 171, 0.35);
-          color: #FFB4AB;
+          border: 1px solid rgba(239, 68, 68, 0.35);
+          color: #FCA5A5;
           padding: 12px;
-          border-radius: 6px;
-          font-size: 11.5px;
+          border-radius: 8px;
+          font-size: 12px;
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
           cursor: pointer;
           transition: all 0.18s;
         }
         .drawer-logout-btn:hover {
-          background: rgba(147, 0, 10, 0.45);
-          border-color: #FFB4AB;
+          background: rgba(239, 68, 68, 0.25);
+          border-color: #EF4444;
           color: #FFF;
         }
 
         .drawer-footer {
           padding: 14px 24px calc(14px + env(safe-area-inset-bottom, 0px));
-          background: rgba(16, 15, 18, 0.88);
+          background: rgba(7, 18, 42, 0.88);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
-          border-top: 1px solid rgba(198, 161, 91, 0.18);
+          border-top: 1px solid rgba(59, 130, 246, 0.16);
           display: flex;
           align-items: center;
           justify-content: space-between;
           font-family: var(--font-mono);
           font-size: 10px;
-          color: #77777D;
+          color: #94A3B8;
         }
 
         .footer-status-row {
@@ -456,7 +456,7 @@ const ProfilePanel = ({ onClose }) => {
           box-shadow: 0 0 6px #10B981;
         }
         .footer-proto {
-          color: #C6A15B;
+          color: #38BDF8;
         }
 
         @media (max-width: 480px) {

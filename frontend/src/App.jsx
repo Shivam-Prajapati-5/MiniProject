@@ -39,7 +39,14 @@ const PublicRoute = ({ children }) => {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Auth />
+          </PublicRoute>
+        }
+      />
       <Route
         path="/chat"
         element={
@@ -56,6 +63,7 @@ function App() {
           </PublicRoute>
         }
       />
+      <Route path="/home" element={<Home />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

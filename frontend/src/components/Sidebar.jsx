@@ -139,16 +139,16 @@ const Sidebar = ({ onProfileClick }) => {
 
       <style>{`
         .sidebar {
-          width: 280px;
-          min-width: 250px;
-          max-width: 320px;
+          width: 290px;
+          min-width: 260px;
+          max-width: 330px;
           display: flex;
           flex-direction: column;
-          background: rgba(16, 15, 18, 0.85);
-          backdrop-filter: blur(24px) saturate(180%);
-          -webkit-backdrop-filter: blur(24px) saturate(180%);
-          border-right: 1px solid rgba(198, 161, 91, 0.20);
-          box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
+          background: rgba(5, 13, 31, 0.76);
+          backdrop-filter: blur(28px) saturate(190%);
+          -webkit-backdrop-filter: blur(28px) saturate(190%);
+          border-right: 1px solid rgba(59, 130, 246, 0.16);
+          box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
           overflow: hidden;
           animation: slideInLeft 300ms var(--ease);
           flex-shrink: 0;
@@ -159,12 +159,12 @@ const Sidebar = ({ onProfileClick }) => {
         .sidebar__header {
           display: flex;
           align-items: center;
-          padding: 14px 12px;
+          padding: 14px 14px;
           gap: 8px;
-          border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: rgba(20, 19, 23, 0.85);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+          border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+          background: rgba(7, 18, 42, 0.82);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           flex-shrink: 0;
         }
 
@@ -176,12 +176,12 @@ const Sidebar = ({ onProfileClick }) => {
 
         .sidebar__add-btn {
           position: relative;
-          background: rgba(74, 21, 37, 0.45);
-          border: 1px solid rgba(198, 161, 91, 0.35);
-          color: #E0C58A;
-          width: 32px;
-          height: 32px;
-          border-radius: 4px;
+          background: rgba(29, 104, 246, 0.18);
+          border: 1px solid rgba(59, 130, 246, 0.35);
+          color: #38BDF8;
+          width: 34px;
+          height: 34px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -190,8 +190,8 @@ const Sidebar = ({ onProfileClick }) => {
         }
 
         .sidebar__add-btn:hover {
-          background: #4A1525;
-          border-color: #E0C58A;
+          background: #1D68F6;
+          border-color: #60A5FA;
           color: #FFFFFF;
         }
 
@@ -199,18 +199,19 @@ const Sidebar = ({ onProfileClick }) => {
           position: absolute;
           top: -4px;
           right: -4px;
-          background: #C6A15B;
-          color: #141315;
+          background: #1D68F6;
+          color: #FFFFFF;
           font-size: 0.65rem;
           font-weight: 800;
-          min-width: 15px;
-          height: 15px;
-          padding: 0 3px;
+          min-width: 16px;
+          height: 16px;
+          padding: 0 4px;
           border-radius: 999px;
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 1.5px solid #141315;
+          border: 1.5px solid #030712;
+          box-shadow: 0 2px 6px rgba(29, 104, 246, 0.6);
         }
 
         .sidebar__empty-wrap {
@@ -227,18 +228,19 @@ const Sidebar = ({ onProfileClick }) => {
           font-size: 0.8rem;
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          border-radius: 4px;
-          background: #4A1525;
-          color: #F5F2ED;
-          border: 1px solid rgba(198, 161, 91, 0.4);
+          letter-spacing: 0.08em;
+          border-radius: 8px;
+          background: #1D68F6;
+          color: #FFFFFF;
+          border: 1px solid rgba(147, 197, 253, 0.35);
           cursor: pointer;
           transition: all 0.18s;
+          box-shadow: 0 4px 14px rgba(29, 104, 246, 0.4);
         }
 
         .sidebar__empty-add:hover {
-          background: #702A3C;
-          border-color: #E0C58A;
+          background: #195ce0;
+          box-shadow: 0 6px 20px rgba(29, 104, 246, 0.6);
         }
 
         .sidebar__me {
@@ -250,13 +252,13 @@ const Sidebar = ({ onProfileClick }) => {
           border: none;
           cursor: pointer;
           padding: 4px;
-          border-radius: 4px;
+          border-radius: 8px;
           text-align: left;
           transition: background var(--t-fast);
           min-width: 0;
         }
         .sidebar__me:hover {
-          background: rgba(198, 161, 91, 0.08);
+          background: rgba(37, 99, 235, 0.12);
         }
 
         .sidebar__me-info {
@@ -276,15 +278,15 @@ const Sidebar = ({ onProfileClick }) => {
         .sidebar__me-tag {
           font-family: var(--font-mono);
           font-size: 11px;
-          color: #C6A15B;
+          color: #38BDF8;
           letter-spacing: 0.02em;
         }
 
         .sidebar__logout {
-          width: 32px;
-          height: 32px;
-          border-radius: 4px;
-          border: 1px solid rgba(198, 161, 91, 0.18);
+          width: 34px;
+          height: 34px;
+          border-radius: 8px;
+          border: 1px solid rgba(59, 130, 246, 0.20);
           background: transparent;
           color: var(--text-muted);
           display: flex;
@@ -303,13 +305,12 @@ const Sidebar = ({ onProfileClick }) => {
 
         /* Section label */
         .sidebar__section-label {
-          padding: 12px 14px 6px;
-          font-family: var(--font-cinzel);
-          font-size: 9.5px;
-          font-weight: 600;
+          padding: 12px 16px 6px;
+          font-size: 11px;
+          font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.18em;
-          color: #C6A15B;
+          letter-spacing: 0.12em;
+          color: #60A5FA;
           flex-shrink: 0;
         }
 
@@ -326,25 +327,28 @@ const Sidebar = ({ onProfileClick }) => {
           left: 10px;
           width: 14px;
           height: 14px;
-          color: #C6A15B;
+          color: #38BDF8;
           pointer-events: none;
         }
         .sidebar__search-input {
           width: 100%;
           padding: 8px 30px 8px 32px;
-          background: rgba(24, 23, 28, 0.75);
+          background: rgba(9, 21, 48, 0.75);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(198, 161, 91, 0.20);
-          border-radius: 6px;
+          border: 1px solid rgba(59, 130, 246, 0.22);
+          border-radius: 8px;
           color: var(--text-primary);
           font-family: var(--font-sans);
-          font-size: 12px;
+          font-size: 12.5px;
           outline: none;
           transition: border-color var(--t-fast);
         }
-        .sidebar__search-input::placeholder { color: var(--text-muted); }
-        .sidebar__search-input:focus { border-color: #E0C58A; }
+        .sidebar__search-input::placeholder { color: #64748B; }
+        .sidebar__search-input:focus {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+        }
         .sidebar__search-clear {
           position: absolute;
           right: 8px;
@@ -376,8 +380,8 @@ const Sidebar = ({ onProfileClick }) => {
         .sidebar__loading { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
         .sidebar__skeleton {
           height: 48px;
-          border-radius: 4px;
-          background: linear-gradient(90deg, #18171A 25%, #232126 50%, #18171A 75%);
+          border-radius: 8px;
+          background: linear-gradient(90deg, rgba(14, 30, 64, 0.5) 25%, rgba(29, 104, 246, 0.15) 50%, rgba(14, 30, 64, 0.5) 75%);
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
         }

@@ -34,24 +34,25 @@ const ContactItem = ({ user, active, online = false, onClick }) => {
           padding: 10px 14px;
           background: transparent;
           border: 1px solid transparent;
-          border-left: 2px solid transparent;
+          border-left: 3px solid transparent;
           cursor: pointer;
           text-align: left;
           transition: all 0.18s ease;
-          border-radius: 4px;
+          border-radius: 8px;
           position: relative;
-          margin-bottom: 2px;
+          margin-bottom: 3px;
         }
         .contact-item:hover {
-          background: rgba(37, 38, 41, 0.45);
-          border-color: rgba(198, 161, 91, 0.15);
+          background: rgba(14, 30, 64, 0.55);
+          border-color: rgba(59, 130, 246, 0.20);
         }
         .contact-item--active {
-          background: #1E1D20;
-          border-left-color: #C6A15B;
-          border-top-color: rgba(198, 161, 91, 0.22);
-          border-right-color: rgba(198, 161, 91, 0.22);
-          border-bottom-color: rgba(198, 161, 91, 0.22);
+          background: rgba(29, 104, 246, 0.18);
+          border-left-color: #38BDF8;
+          border-top-color: rgba(59, 130, 246, 0.30);
+          border-right-color: rgba(59, 130, 246, 0.30);
+          border-bottom-color: rgba(59, 130, 246, 0.30);
+          box-shadow: 0 4px 14px rgba(29, 104, 246, 0.15);
         }
 
         .contact-info {
@@ -71,7 +72,7 @@ const ContactItem = ({ user, active, online = false, onClick }) => {
           text-overflow: ellipsis;
         }
         .contact-item--active .contact-info__name {
-          color: #F5F2ED;
+          color: #FFFFFF;
         }
         .contact-info__sub {
           font-family: var(--font-mono);
@@ -82,7 +83,7 @@ const ContactItem = ({ user, active, online = false, onClick }) => {
           text-overflow: ellipsis;
         }
         .contact-item--active .contact-info__sub {
-          color: #C6A15B;
+          color: #38BDF8;
         }
       `}</style>
     </button>

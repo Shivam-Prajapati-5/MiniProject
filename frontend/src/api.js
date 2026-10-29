@@ -10,7 +10,6 @@ const derivedSocketUrl = normalizedBaseUrl.endsWith('/api')
 export const API_BASE_URL = normalizedBaseUrl;
 export const SOCKET_URL = (
   import.meta.env.VITE_SOCKET_URL
-  || (import.meta.env.PROD ? 'https://miniproject-39kl.onrender.com' : '')
   || derivedSocketUrl
   || window.location.origin
 ).replace(/\/+$/, '');

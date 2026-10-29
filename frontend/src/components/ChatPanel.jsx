@@ -128,13 +128,14 @@ const ChatPanel = () => {
           flex: 1;
           display: flex;
           flex-direction: column;
-          background: rgba(20, 19, 23, 0.72);
-          backdrop-filter: blur(24px) saturate(180%);
-          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          background: rgba(4, 11, 28, 0.65);
+          backdrop-filter: blur(28px) saturate(190%);
+          -webkit-backdrop-filter: blur(28px) saturate(190%);
           overflow: hidden;
           animation: fadeIn 300ms var(--ease);
           position: relative;
           z-index: 5;
+          box-shadow: inset 1px 0 0 0 rgba(59, 130, 246, 0.12);
         }
         .chat-panel--empty {
           align-items: stretch;
@@ -146,11 +147,11 @@ const ChatPanel = () => {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 12px 20px;
-          border-bottom: 1px solid rgba(198, 161, 91, 0.18);
-          background: rgba(24, 23, 28, 0.85);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+          padding: 14px 22px;
+          border-bottom: 1px solid rgba(59, 130, 246, 0.16);
+          background: rgba(6, 16, 38, 0.78);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           flex-shrink: 0;
           position: relative;
         }
@@ -160,16 +161,18 @@ const ChatPanel = () => {
           justify-content: center;
           width: 32px;
           height: 32px;
-          border-radius: 4px;
-          background: rgba(35, 33, 38, 0.8);
-          border: 1px solid rgba(198, 161, 91, 0.25);
-          color: #E0C58A;
+          border-radius: 8px;
+          background: rgba(14, 30, 64, 0.8);
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          color: #38BDF8;
           cursor: pointer;
           font-size: 16px;
           margin-right: 2px;
+          transition: all 0.18s;
         }
         .chat-panel__back-btn:hover {
-          background: #4A1525;
+          background: #1D68F6;
+          border-color: #60A5FA;
           color: #FFFFFF;
         }
         .chat-panel__header-info {
@@ -204,15 +207,15 @@ const ChatPanel = () => {
         .chat-panel__header-sub--online {
           color: #10B981;
         }
-        /* Subtle gold accent strip at bottom of header */
+        /* Electric blue accent strip at bottom of header */
         .chat-panel__header-accent {
           position: absolute;
           bottom: 0;
           left: 20px;
           right: 20px;
           height: 1px;
-          background: linear-gradient(90deg, #C6A15B, transparent);
-          opacity: 0.35;
+          background: linear-gradient(90deg, #1D68F6 0%, #38BDF8 50%, transparent 100%);
+          opacity: 0.55;
         }
 
         /* Messages scrollable area */
@@ -223,9 +226,9 @@ const ChatPanel = () => {
           padding: 20px 24px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
           background: transparent;
-          background-image: radial-gradient(rgba(198, 161, 91, 0.03) 1px, transparent 0);
+          background-image: radial-gradient(rgba(59, 130, 246, 0.06) 1px, transparent 0);
           background-size: 24px 24px;
         }
 
@@ -234,19 +237,20 @@ const ChatPanel = () => {
           align-self: center;
           flex-shrink: 0;
           margin-bottom: 10px;
-          padding: 6px 14px;
-          background: #18171A;
-          border: 1px solid rgba(198, 161, 91, 0.20);
-          border-radius: 4px;
-          color: #E0C58A;
+          padding: 6px 16px;
+          background: rgba(10, 24, 52, 0.85);
+          border: 1px solid rgba(59, 130, 246, 0.25);
+          border-radius: 8px;
+          color: #60A5FA;
           font-family: var(--font-mono);
           font-size: 11px;
           cursor: pointer;
           transition: all var(--t-fast);
         }
         .chat-panel__load-older:hover:not(:disabled) {
-          border-color: #E0C58A;
-          background: rgba(74, 21, 37, 0.4);
+          border-color: #38BDF8;
+          background: #1D68F6;
+          color: #FFFFFF;
         }
         .chat-panel__load-older:disabled {
           opacity: 0.6;
@@ -270,7 +274,7 @@ const ChatPanel = () => {
           align-items: center;
           gap: 8px;
           padding: 4px 2px 0;
-          color: #E0C58A;
+          color: #38BDF8;
           font-family: var(--font-mono);
           font-size: 11px;
           animation: fadeIn 180ms var(--ease);
@@ -284,7 +288,7 @@ const ChatPanel = () => {
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: #E0C58A;
+          background: #38BDF8;
           animation: typingBounce 1.1s infinite ease-in-out;
         }
         .chat-panel__typing-dots i:nth-child(2) { animation-delay: 0.15s; }
@@ -305,7 +309,7 @@ const ChatPanel = () => {
           height: 40px;
           width: 55%;
           border-radius: var(--r-lg);
-          background: linear-gradient(90deg, var(--bg-hover) 25%, rgba(30,60,80,0.25) 50%, var(--bg-hover) 75%);
+          background: linear-gradient(90deg, rgba(14, 30, 64, 0.4) 25%, rgba(29, 104, 246, 0.15) 50%, rgba(14, 30, 64, 0.4) 75%);
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
           align-self: flex-start;
