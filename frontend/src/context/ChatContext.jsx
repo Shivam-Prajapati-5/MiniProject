@@ -300,11 +300,13 @@ export const ChatProvider = ({ children }) => {
       withCredentials: true,
       path: '/socket.io',
       autoConnect: false,
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
       // The API is reached through the Vercel same-origin proxy, so the
       // HttpOnly cookie is not available on the Render socket origin.
       // Mint a short-lived handshake token for every (re)connect instead.
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
       auth: (callback) => {
         api.get('/auth/socket-token')
           .then(({ data }) => callback({ token: data.token }))
@@ -343,15 +345,20 @@ export const ChatProvider = ({ children }) => {
 
     const handleDisconnect = () => {
       setConnected(false)
-      // Clear online status immediately — we have no reliable state
-      // while disconnected. The server sends a fresh presence:state
-      // on every reconnect which repopulates this correctly.
-      setOnlineUserIds(new Set())
     }
 
     const handleConnectError = (err) => {
       setConnected(false)
       console.error('Realtime connection failed:', err.message)
+      // When Socket.io encounters an auth error during connection, it deactivates auto-reconnect.
+      // Retry connecting after a brief delay so a fresh handshake token is acquired:
+      if (!socket.active) {
+        setTimeout(() => {
+          if (socketRef.current) {
+            socketRef.current.connect()
+          }
+        }, 2500)
+      }
     }
 
     const handlePresenceState = (payload = {}) => {
@@ -380,24 +387,23 @@ export const ChatProvider = ({ children }) => {
 
       if (!message?._id || !conversationId) return
 
-      const senderId = String(message.senderId)
-      const receiverId = String(message.reciverId)
+      const senderId = String(message.senderId?._id || message.senderId || '')
+      const receiverId = String(message.reciverId?._id || message.reciverId || message.receiverId?._id || message.receiverId || '')
       const otherUserId = senderId === currentUserId ? receiverId : senderId
 
       setConversationMapping({ [otherUserId]: String(conversationId) })
 
-      if (selectedConversationRef.current === String(conversationId)) {
-        setMessages(prev => (
-          prev.some(item => String(item._id) === String(message._id))
-            ? prev
-            : [...prev, message]
-        ))
-      } else if (
-        !selectedConversationRef.current &&
-        selectedUserRef.current === otherUserId
-      ) {
-        selectedConversationRef.current = String(conversationId)
-        setActiveConversationId(String(conversationId))
+      // Check if message belongs to active conversation or selected user
+      const isCurrentChat =
+        (selectedConversationRef.current && selectedConversationRef.current === String(conversationId)) ||
+        (selectedUserRef.current && selectedUserRef.current === otherUserId)
+
+      if (isCurrentChat) {
+        if (selectedConversationRef.current !== String(conversationId)) {
+          selectedConversationRef.current = String(conversationId)
+          setActiveConversationId(String(conversationId))
+        }
+
         setMessages(prev => (
           prev.some(item => String(item._id) === String(message._id))
             ? prev
@@ -405,6 +411,7 @@ export const ChatProvider = ({ children }) => {
         ))
       }
 
+      loadConversations()
       clearTypingUser(String(conversationId), otherUserId)
     }
 
